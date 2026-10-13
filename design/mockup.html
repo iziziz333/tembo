@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tembo — макет</title>
+<style>
+:root{--bg:#f3f1ec;--win:#fffdf9;--side:#f7f4ee;--ink:#1f1d1a;--mute:#76716a;--line:#e4dfd6;--acc:#2f6b4f;--acc-ink:#fff;--acc-soft:#e3efe8;--warn:#a5642a;--warn-soft:#f6ebdf}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151514;--win:#1e1d1b;--side:#191817;--ink:#ece8e1;--mute:#9a948b;--line:#33312d;--acc:#6fbf95;--acc-ink:#0f1a14;--acc-soft:#1f3329;--warn:#e0a46b;--warn-soft:#3a2a1c}}
+:root[data-theme="dark"]{--bg:#151514;--win:#1e1d1b;--side:#191817;--ink:#ece8e1;--mute:#9a948b;--line:#33312d;--acc:#6fbf95;--acc-ink:#0f1a14;--acc-soft:#1f3329;--warn:#e0a46b;--warn-soft:#3a2a1c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 16px}
+h1{font-size:22px;margin:0 0 4px}
+.lead{color:var(--mute);margin:0 0 28px}
+.screen{max-width:880px;margin:0 auto 44px}
+.label{font-size:13px;color:var(--mute);margin:0 0 8px;letter-spacing:.02em}
+.win{background:var(--win);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
+.dots span{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--line);margin-right:5px}
+.body{padding:28px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--win);color:var(--ink);border-radius:8px;padding:9px 16px;font:inherit;cursor:pointer}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink);font-weight:600}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:44px 20px;text-align:center}
+.drop b{display:block;font-size:18px;margin-bottom:6px}
+.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.note{margin-top:22px;font-size:13px;color:var(--mute);display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--side);border-radius:10px;padding:12px}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:12px;color:var(--mute)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.col h3{font-size:13px;color:var(--mute);font-weight:500;margin:0 0 8px}
+.tree{background:var(--side);border-radius:10px;padding:10px 12px;font-size:14px;min-height:260px}
+.row{display:flex;align-items:center;gap:8px;padding:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.in{padding-left:22px}.row.in2{padding-left:44px}
+.row .why{margin-left:auto;font-size:12px;color:var(--mute)}
+.f{color:var(--mute)}
+.tag{font-size:11px;border-radius:99px;padding:1px 8px;background:var(--warn-soft);color:var(--warn)}
+input[type=checkbox]{accent-color:var(--acc);margin:0}
+.foot{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.foot .sp{flex:1;color:var(--mute);font-size:13px}
+.done{text-align:center;padding:20px 0}
+.done .big{font-size:40px;line-height:1;margin-bottom:10px;color:var(--acc)}
+.done b{font-size:20px;display:block;margin-bottom:6px}
+.done p{color:var(--mute);margin:0 0 22px}
+.done .foot{justify-content:center}
+@media (max-width:640px){.cols{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.body{padding:18px}}
+</style>
+</head>
+<body>
+
+<div class="screen">
+  <h1>Tembo: макет интерфейса</h1>
+  <p class="lead">Три экрана: выбрать папку → проверить план → готово (с отменой). Набросок, цвета и тексты обсуждаемы.</p>
+</div>
+
+<div class="screen">
+  <p class="label">ЭКРАН 1 · ВЫБОР ПАПКИ</p>
+  <div class="win">
+    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo</div>
+    <div class="body">
+      <div class="drop">
+        <b>Перетащите сюда папку, которую нужно разобрать</b>
+        <span class="f">или выберите быстро:</span>
+        <div class="quick">
+          <button class="btn">🖥 Рабочий стол</button>
+          <button class="btn">⬇ Загрузки</button>
+          <button class="btn">📁 Другая папка…</button>
+        </div>
+      </div>
+      <div class="note">
+        <span>✓ Сначала только план, файлы не трогаются</span>
+        <span>✓ Ничего не удаляется</span>
+        <span>✓ Всё можно отменить</span>
+        <span>✓ Работает без интернета</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen">
+  <p class="label">ЭКРАН 2 · ПЛАН (ГЛАВНЫЙ ЭКРАН)</p>
+  <div class="win">
+    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo — Загрузки</div>
+    <div class="body">
+      <div class="stats">
+        <div class="stat"><b>214</b><span>файлов разложить</span></div>
+        <div class="stat"><b>37</b><span>дубликатов · 1,8 ГБ</span></div>
+        <div class="stat"><b>12</b><span>непонятных → на проверку</span></div>
+        <div class="stat"><b>3</b><span>пропущено (недокачано)</span></div>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <h3>Сейчас</h3>
+          <div class="tree">
+            <div class="row">📄 report_final_v3.pdf</div>
+            <div class="row">🖼 IMG_2034.jpg</div>
+            <div class="row">🖼 IMG_2035.jpg</div>
+            <div class="row">⚙ setup_discord.exe</div>
+            <div class="row">📄 report_final_v3 (1).pdf</div>
+            <div class="row">🎵 track01.mp3</div>
+            <div class="row">📊 бюджет.xlsx</div>
+            <div class="row">❓ data.bin</div>
+            <div class="row f">… ещё 268</div>
+          </div>
+        </div>
+        <div class="col">
+          <h3>Станет</h3>
+          <div class="tree">
+            <div class="row"><input type="checkbox" checked> 📁 Documents <span class="why">48</span></div>
+            <div class="row in"><input type="checkbox" checked> report_final_v3.pdf</div>
+            <div class="row"><input type="checkbox" checked> 📁 Images <span class="why">96</span></div>
+            <div class="row in">📁 2025-07</div>
+            <div class="row in2"><input type="checkbox" checked> IMG_2034.jpg, IMG_2035.jpg</div>
+            <div class="row"><input type="checkbox" checked> 📁 Installers <span class="why">19</span></div>
+            <div class="row"><input type="checkbox"> 📁 Audio <span class="why">снято вами</span></div>
+            <div class="row"><input type="checkbox" checked> 📁 _Tembo_Review <span class="tag">проверьте</span></div>
+            <div class="row in"><input type="checkbox" checked> Duplicates · report_final_v3 (1).pdf</div>
+            <div class="row in"><input type="checkbox" checked> Unsorted · data.bin</div>
+          </div>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="sp">Снимите галочку с того, что трогать не нужно.</span>
+        <button class="btn">Назад</button>
+        <button class="btn pri">Разобрать 263 файла</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen">
+  <p class="label">ЭКРАН 3 · ГОТОВО</p>
+  <div class="win">
+    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo — Загрузки</div>
+    <div class="body">
+      <div class="done">
+        <div class="big">✓</div>
+        <b>Готово: 263 файла на своих местах</b>
+        <p>Дубликаты и непонятные файлы лежат в «_Tembo_Review»: посмотрите, когда будет время.</p>
+        <div class="foot">
+          <button class="btn">↶ Отменить всё</button>
+          <button class="btn">Открыть папку</button>
+          <button class="btn pri">Разобрать ещё</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
