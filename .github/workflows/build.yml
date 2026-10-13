@@ -23,4 +23,5 @@ jobs:
           name: Tembo-Windows
           path: |
             dist/*.exe
+            dist/*.zip
           if-no-files-found: error

@@ -127,9 +127,9 @@ ipcMain.handle('pick-folder', async () => {
   return r.canceled ? null : r.filePaths[0];
 });
 
-ipcMain.handle('analyze', async (_e, folder) => {
+ipcMain.handle('analyze', async (e, folder) => {
   if (!(await isFolder(folder))) throw new Error('Папка не найдена');
-  const scanned = await scan(folder);
+  const scanned = await scan(folder, { onProgress: n => e.sender.send('scan-progress', folder, n) });
   const plan = buildPlan(scanned.files, lang);
   plans.set(folder, plan);
   return { ...summarize(folder, scanned, plan), canUndo: Boolean(await executor.lastJournal(folder)) };

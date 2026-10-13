@@ -184,3 +184,25 @@ test('undo skips conflicts and can be retried', async () => {
   assert.equal(u.failed.length, 0);
   assert.equal(fs.readFileSync(path.join(d, 'a.pdf'), 'utf8'), 'a');
 });
+
+test('large files: same edges but different middle are not duplicates', async () => {
+  const d = tmp();
+  const size = 512 * 1024;
+  const a = Buffer.alloc(size, 1);
+  const b = Buffer.from(a);
+  b[size / 2] = 2; // differs only in the middle
+  touch(d, 'a.iso', a, '2025-01-01T00:00:00');
+  touch(d, 'b.iso', b, '2025-01-02T00:00:00');
+  touch(d, 'c.iso', a, '2025-01-03T00:00:00'); // a true copy of a.iso
+  const p = await plan(d);
+  const dups = p.moves.filter(m => m.group === 'duplicates');
+  assert.deepEqual(dups.map(m => [m.file.path, m.duplicateOf]), [['c.iso', 'a.iso']]);
+});
+
+test('subfolder count stops at depth 4', async () => {
+  const d = tmp();
+  touch(d, 'A/1.txt');
+  touch(d, 'A/B/C/D/4.txt');
+  touch(d, 'A/B/C/D/E/5.txt');
+  assert.equal((await scan(d)).organized, 2);
+});

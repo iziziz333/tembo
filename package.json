@@ -1,7 +1,7 @@
 {
   "name": "tembo",
   "productName": "Tembo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Безопасный разборщик файлов для Windows",
   "main": "src/main.js",
   "license": "MIT",
@@ -32,7 +32,7 @@
           ]
         },
         {
-          "target": "portable",
+          "target": "zip",
           "arch": [
             "x64"
           ]
@@ -44,8 +44,8 @@
       "allowToChangeInstallationDirectory": true,
       "artifactName": "Tembo-Setup-${version}.exe"
     },
-    "portable": {
-      "artifactName": "Tembo-${version}-portable.exe"
+    "zip": {
+      "artifactName": "Tembo-${version}-win.zip"
     }
   },
   "devDependencies": {

@@ -104,15 +104,28 @@ function folderTitle(folder) {
 
 // ---------- sidebar ----------
 
-async function refreshCards() {
+// Loose-file counts of the folders that are not open right now.
+const looseCounts = new Map();
+
+function refreshCards({ rescan = false } = {}) {
   const { downloads, desktop } = state.env;
   for (const [id, folder] of [['card-downloads', downloads], ['card-desktop', desktop]]) {
     const card = $(id);
-    card.classList.toggle('on', state.folder === folder);
-    api.looseCount(folder).then(n => {
+    const show = n => {
       card.querySelector('.n').textContent = n == null ? '–' : n;
-      card.disabled = n == null;
-    });
+      card.disabled = n === null;
+    };
+    card.classList.toggle('on', state.folder === folder);
+    if (state.folder === folder) {
+      // The open folder is counted by its own scan, never twice.
+      if (state.data) show(state.data.moves.length);
+      else if (rescan) api.looseCount(folder).then(show);
+      looseCounts.delete(folder);
+    } else if (looseCounts.has(folder) && !rescan) {
+      show(looseCounts.get(folder));
+    } else if (state.data || rescan) {
+      api.looseCount(folder).then(n => { looseCounts.set(folder, n); show(n); });
+    }
   }
   const moves = state.data ? state.data.moves : [];
   for (const key of ['duplicates', 'unsorted']) {
@@ -150,7 +163,7 @@ async function open(folder) {
   $('title').textContent = folderTitle(folder);
   $('subtitle').textContent = folder;
   $('count').textContent = '';
-  $('list').replaceChildren(message('Сканирую папку…'));
+  $('list').replaceChildren(message('Сканирую папку…', ''));
   $('apply').disabled = true;
   $('undo-last').hidden = true;
   setOrb(null);
@@ -187,6 +200,12 @@ async function open(folder) {
   renderList();
   refreshCards();
 }
+
+api.onScanProgress((folder, n) => {
+  if (folder !== state.folder || state.data) return;
+  const box = $('list').querySelector('.empty');
+  if (box) box.lastChild.textContent = `Найдено ${files(n)}`;
+});
 
 function setOrb(pct) {
   $('pct').textContent = pct == null ? '–' : `${Math.round(pct * 100)}%`;
@@ -229,7 +248,7 @@ function renderComposition() {
 function message(title, text) {
   const box = el('div', 'empty');
   box.append(el('b', null, title));
-  if (text) box.append(text);
+  if (text != null) box.append(text);
   return box;
 }
 
@@ -354,7 +373,7 @@ function showDone(r) {
   state.data = null; // the plan is spent; counters wait for the next scan
   showView('done');
   renderRecent();
-  refreshCards();
+  refreshCards({ rescan: true });
 }
 
 function showView(name) {
