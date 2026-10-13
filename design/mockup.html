@@ -5,148 +5,272 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tembo — макет</title>
 <style>
-:root{--bg:#f3f1ec;--win:#fffdf9;--side:#f7f4ee;--ink:#1f1d1a;--mute:#76716a;--line:#e4dfd6;--acc:#2f6b4f;--acc-ink:#fff;--acc-soft:#e3efe8;--warn:#a5642a;--warn-soft:#f6ebdf}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151514;--win:#1e1d1b;--side:#191817;--ink:#ece8e1;--mute:#9a948b;--line:#33312d;--acc:#6fbf95;--acc-ink:#0f1a14;--acc-soft:#1f3329;--warn:#e0a46b;--warn-soft:#3a2a1c}}
-:root[data-theme="dark"]{--bg:#151514;--win:#1e1d1b;--side:#191817;--ink:#ece8e1;--mute:#9a948b;--line:#33312d;--acc:#6fbf95;--acc-ink:#0f1a14;--acc-soft:#1f3329;--warn:#e0a46b;--warn-soft:#3a2a1c}
+:root{
+  --desk:linear-gradient(135deg,#cfe6ff 0%,#e8f3ff 40%,#d6ecff 70%,#bcdcff 100%);
+  --blob1:#8ec5ff;--blob2:#b9e3ff;--blob3:#a9c8ff;
+  --side:rgba(236,244,255,.55);--main:rgba(255,255,255,.82);--card:rgba(255,255,255,.62);
+  --line:rgba(30,60,110,.10);--ink:#0f1c2e;--mute:#6b7a90;--acc:#1a7cff;--acc2:#4fb4ff;
+  --field:rgba(20,50,100,.07);--shadow:0 30px 80px rgba(30,80,160,.22),0 2px 6px rgba(30,80,160,.08);
+  --sel:rgba(26,124,255,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --desk:linear-gradient(135deg,#0b1a2e 0%,#10233d 50%,#0a1626 100%);
+  --blob1:#1d4f8f;--blob2:#123a6b;--blob3:#2a5aa8;
+  --side:rgba(30,42,62,.55);--main:rgba(22,28,38,.84);--card:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.08);--ink:#e9f0fa;--mute:#8d9bb0;--acc:#4ea1ff;--acc2:#7cc4ff;
+  --field:rgba(255,255,255,.08);--shadow:0 30px 80px rgba(0,0,0,.5);--sel:rgba(78,161,255,.18);
+}}
+:root[data-theme="dark"]{
+  --desk:linear-gradient(135deg,#0b1a2e 0%,#10233d 50%,#0a1626 100%);
+  --blob1:#1d4f8f;--blob2:#123a6b;--blob3:#2a5aa8;
+  --side:rgba(30,42,62,.55);--main:rgba(22,28,38,.84);--card:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.08);--ink:#e9f0fa;--mute:#8d9bb0;--acc:#4ea1ff;--acc2:#7cc4ff;
+  --field:rgba(255,255,255,.08);--shadow:0 30px 80px rgba(0,0,0,.5);--sel:rgba(78,161,255,.18);
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 16px}
-h1{font-size:22px;margin:0 0 4px}
-.lead{color:var(--mute);margin:0 0 28px}
-.screen{max-width:880px;margin:0 auto 44px}
-.label{font-size:13px;color:var(--mute);margin:0 0 8px;letter-spacing:.02em}
-.win{background:var(--win);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.06)}
-.bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
-.dots span{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--line);margin-right:5px}
-.body{padding:28px}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--win);color:var(--ink);border-radius:8px;padding:9px 16px;font:inherit;cursor:pointer}
-.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink);font-weight:600}
-.drop{border:2px dashed var(--line);border-radius:12px;padding:44px 20px;text-align:center}
-.drop b{display:block;font-size:18px;margin-bottom:6px}
-.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.note{margin-top:22px;font-size:13px;color:var(--mute);display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-.stat{background:var(--side);border-radius:10px;padding:12px}
-.stat b{display:block;font-size:22px}
-.stat span{font-size:12px;color:var(--mute)}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.col h3{font-size:13px;color:var(--mute);font-weight:500;margin:0 0 8px}
-.tree{background:var(--side);border-radius:10px;padding:10px 12px;font-size:14px;min-height:260px}
-.row{display:flex;align-items:center;gap:8px;padding:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row.in{padding-left:22px}.row.in2{padding-left:44px}
-.row .why{margin-left:auto;font-size:12px;color:var(--mute)}
-.f{color:var(--mute)}
-.tag{font-size:11px;border-radius:99px;padding:1px 8px;background:var(--warn-soft);color:var(--warn)}
-input[type=checkbox]{accent-color:var(--acc);margin:0}
-.foot{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
-.foot .sp{flex:1;color:var(--mute);font-size:13px}
-.done{text-align:center;padding:20px 0}
-.done .big{font-size:40px;line-height:1;margin-bottom:10px;color:var(--acc)}
-.done b{font-size:20px;display:block;margin-bottom:6px}
-.done p{color:var(--mute);margin:0 0 22px}
-.done .foot{justify-content:center}
-@media (max-width:640px){.cols{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.body{padding:18px}}
+html,body{margin:0}
+body{background:var(--desk);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;min-height:100vh;padding:40px 16px 60px;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(80px);opacity:.7;z-index:0;pointer-events:none}
+body::before{width:520px;height:520px;background:var(--blob1);top:-120px;left:-80px}
+body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right:-120px}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+.top h1{font-size:15px;font-weight:600;margin:0;color:var(--mute)}
+.seg{display:inline-flex;background:var(--field);border-radius:9px;padding:2px}
+.seg button{border:0;background:none;font:inherit;font-size:12px;padding:5px 12px;border-radius:7px;color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--main);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.cap{font-size:12px;color:var(--mute);margin:30px 0 10px;letter-spacing:.04em;text-transform:uppercase}
+
+/* window */
+.win{display:grid;grid-template-columns:270px 1fr;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.35);min-height:600px}
+.side{background:var(--side);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);padding:16px 12px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--line)}
+.lights{display:flex;gap:8px;padding:2px 6px 4px}
+.lights i{width:12px;height:12px;border-radius:50%;display:block}
+.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.search{display:flex;align-items:center;gap:6px;background:var(--field);border-radius:8px;padding:6px 9px;color:var(--mute);font-size:13px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{background:var(--card);border-radius:12px;padding:9px 10px 8px;border:1px solid var(--line);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);cursor:default}
+.card.on{background:var(--acc);border-color:transparent;color:#fff}
+.card.on .ct,.card.on .n{color:#fff}
+.card .hd{display:flex;justify-content:space-between;align-items:center}
+.ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.ic svg{width:15px;height:15px}
+.card .n{font-size:20px;font-weight:700;color:var(--ink)}
+.card .ct{font-size:12.5px;font-weight:600;color:var(--mute);margin-top:4px}
+.grp{font-size:11.5px;font-weight:600;color:var(--mute);padding:4px 8px 2px}
+.list{display:flex;flex-direction:column;gap:1px}
+.li{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;font-size:13.5px}
+.li .ic{width:24px;height:24px}.li .ic svg{width:13px;height:13px}
+.li .c{margin-left:auto;color:var(--mute);font-size:12.5px}
+.li.on{background:var(--sel)}
+.badge{margin-top:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.badge b{color:var(--ink);font-weight:600}
+
+.main{background:var(--main);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);padding:20px 28px 0;display:flex;flex-direction:column;position:relative}
+.tool{display:flex;justify-content:flex-end;gap:14px;color:var(--mute);font-size:18px;height:22px}
+.title{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 2px}
+.title h2{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:0;color:var(--acc)}
+.title .big{font-size:30px;font-weight:600;color:var(--acc)}
+.sub{color:var(--mute);font-size:13px;margin-bottom:16px}
+.sec{border-top:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);margin-left:38px;font-size:13.5px}
+.row.h{margin-left:0;padding:11px 0;font-weight:600;font-size:14.5px}
+.row .rt{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:12.5px;font-weight:400}
+.chev{transition:transform .2s;color:var(--mute)}
+.open .chev{transform:rotate(90deg)}
+.chk{width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(110,130,160,.55);flex:none;display:grid;place-items:center}
+.chk.on{background:var(--acc);border-color:var(--acc)}
+.chk.on::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.fn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pill{font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--sel);color:var(--acc);white-space:nowrap}
+.pill.warn{background:rgba(255,159,10,.15);color:#c77700}
+.more{margin-left:38px;padding:8px 0;color:var(--acc);font-size:13px}
+.dock{position:sticky;bottom:0;margin:auto -28px 0;padding:14px 28px;display:flex;align-items:center;gap:12px;background:linear-gradient(to top,var(--main) 60%,transparent);}
+.dock .safe{font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:6px;flex:1}
+.btn{border:0;font:inherit;font-weight:600;font-size:13.5px;border-radius:99px;padding:9px 18px;cursor:pointer;color:var(--ink);background:var(--field)}
+.btn.pri{color:#fff;background:linear-gradient(180deg,var(--acc2),var(--acc));box-shadow:0 6px 18px rgba(26,124,255,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+
+/* done */
+.done{display:grid;place-items:center;text-align:center;flex:1;padding:40px 0 60px}
+.halo{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,var(--acc2),var(--acc));box-shadow:0 18px 40px rgba(26,124,255,.35),inset 0 2px 0 rgba(255,255,255,.4);margin:0 auto 18px}
+.halo svg{width:42px;height:42px;color:#fff}
+.done h2{font-size:26px;margin:0 0 6px;letter-spacing:-.02em}
+.done p{color:var(--mute);margin:0 auto 22px;max-width:380px}
+.done .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sumrow{display:flex;gap:10px;justify-content:center;margin-bottom:26px;flex-wrap:wrap}
+.sumrow div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:110px}
+.sumrow b{display:block;font-size:20px}
+.sumrow span{font-size:12px;color:var(--mute)}
+
+
+/* dashboard */
+.dash{display:grid;grid-template-columns:200px 1fr;gap:14px;margin-bottom:18px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.tile h4{margin:0 0 2px;font-size:13px;font-weight:600}
+.tile .s{font-size:12px;color:var(--mute)}
+.orb-t{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.orb{position:relative;width:132px;height:132px;border-radius:50%;overflow:hidden;background:rgba(26,124,255,.08);box-shadow:inset 0 0 0 2px rgba(26,124,255,.25),inset 0 8px 20px rgba(255,255,255,.35),0 12px 30px rgba(26,124,255,.25)}
+.orb .wave{position:absolute;left:-50%;width:200%;height:200%;top:74%;border-radius:42%;background:linear-gradient(180deg,var(--acc2),var(--acc));animation:spin 9s linear infinite;opacity:.9}
+.orb .wave.b{top:71%;opacity:.35;animation-duration:13s;border-radius:40%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orb .v{position:absolute;inset:0;display:grid;place-items:center;align-content:center;padding-bottom:30px;z-index:2;line-height:1.1}
+.orb .v b{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.orb .v span{font-size:11px;color:var(--mute)}
+.orb::after{content:"";position:absolute;top:10px;left:24px;width:46px;height:22px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(4px);transform:rotate(-25deg);z-index:3}
+.right{display:grid;grid-template-rows:auto 1fr;gap:14px}
+.bar{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:12px 0 10px;gap:2px}
+.bar i{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mini{display:flex;flex-direction:column;gap:8px}
+.mini .ic{width:34px;height:34px}.mini .ic svg{width:17px;height:17px}
+.mini b{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.prog{height:5px;border-radius:99px;background:var(--field);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:99px}
+.fab{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,var(--acc2),var(--acc));box-shadow:0 0 0 6px rgba(255,255,255,.55),0 14px 34px rgba(26,124,255,.45)}
+@media (max-width:760px){.dash{grid-template-columns:1fr}.minis{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:480px){.minis{grid-template-columns:1fr}}
+@media (max-width:760px){.win{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.main{padding:16px 16px 0}.row{margin-left:32px}.dock{margin:auto -16px 0;padding:12px 16px}.dock .safe{display:none}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m-5-5 5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-desk" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 5h18v11H3zM9 20h6M12 16v4"/></symbol>
+  <symbol id="i-dup" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M8 8h11v11H8zM5 16V5h11"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M6 3h8l4 4v14H6zM9 12h6M9 16h6"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6"/></symbol>
+  <symbol id="i-app" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12 4 7.5"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-zip" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 3h14v18H5zM12 3v4m0 2v2m0 2v2"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 6h6l2 2h10v11H3z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="m9 12 2 2 4-4"/></symbol>
+</svg>
 
-<div class="screen">
-  <h1>Tembo: макет интерфейса</h1>
-  <p class="lead">Три экрана: выбрать папку → проверить план → готово (с отменой). Набросок, цвета и тексты обсуждаемы.</p>
-</div>
-
-<div class="screen">
-  <p class="label">ЭКРАН 1 · ВЫБОР ПАПКИ</p>
-  <div class="win">
-    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo</div>
-    <div class="body">
-      <div class="drop">
-        <b>Перетащите сюда папку, которую нужно разобрать</b>
-        <span class="f">или выберите быстро:</span>
-        <div class="quick">
-          <button class="btn">🖥 Рабочий стол</button>
-          <button class="btn">⬇ Загрузки</button>
-          <button class="btn">📁 Другая папка…</button>
-        </div>
-      </div>
-      <div class="note">
-        <span>✓ Сначала только план, файлы не трогаются</span>
-        <span>✓ Ничего не удаляется</span>
-        <span>✓ Всё можно отменить</span>
-        <span>✓ Работает без интернета</span>
-      </div>
+<div class="wrap">
+  <div class="top">
+    <h1>Tembo · макет интерфейса</h1>
+    <div class="seg" id="theme">
+      <button data-t="auto" class="on">Авто</button><button data-t="light">Светлая</button><button data-t="dark">Тёмная</button>
     </div>
   </div>
-</div>
 
-<div class="screen">
-  <p class="label">ЭКРАН 2 · ПЛАН (ГЛАВНЫЙ ЭКРАН)</p>
+  <div class="cap">Главный экран · план разбора</div>
   <div class="win">
-    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo — Загрузки</div>
-    <div class="body">
-      <div class="stats">
-        <div class="stat"><b>214</b><span>файлов разложить</span></div>
-        <div class="stat"><b>37</b><span>дубликатов · 1,8 ГБ</span></div>
-        <div class="stat"><b>12</b><span>непонятных → на проверку</span></div>
-        <div class="stat"><b>3</b><span>пропущено (недокачано)</span></div>
+    <aside class="side">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <div class="search"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Поиск файла</div>
+      <div class="cards">
+        <div class="card on"><div class="hd"><span class="ic" style="background:rgba(255,255,255,.25)"><svg><use href="#i-down"/></svg></span><span class="n">263</span></div><div class="ct">Загрузки</div></div>
+        <div class="card"><div class="hd"><span class="ic" style="background:#5ac8fa"><svg><use href="#i-desk"/></svg></span><span class="n">58</span></div><div class="ct">Рабочий стол</div></div>
+        <div class="card"><div class="hd"><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span><span class="n">37</span></div><div class="ct">Дубликаты</div></div>
+        <div class="card"><div class="hd"><span class="ic" style="background:#ff9f0a"><svg><use href="#i-eye"/></svg></span><span class="n">12</span></div><div class="ct">На проверку</div></div>
       </div>
-      <div class="cols">
-        <div class="col">
-          <h3>Сейчас</h3>
-          <div class="tree">
-            <div class="row">📄 report_final_v3.pdf</div>
-            <div class="row">🖼 IMG_2034.jpg</div>
-            <div class="row">🖼 IMG_2035.jpg</div>
-            <div class="row">⚙ setup_discord.exe</div>
-            <div class="row">📄 report_final_v3 (1).pdf</div>
-            <div class="row">🎵 track01.mp3</div>
-            <div class="row">📊 бюджет.xlsx</div>
-            <div class="row">❓ data.bin</div>
-            <div class="row f">… ещё 268</div>
-          </div>
-        </div>
-        <div class="col">
-          <h3>Станет</h3>
-          <div class="tree">
-            <div class="row"><input type="checkbox" checked> 📁 Documents <span class="why">48</span></div>
-            <div class="row in"><input type="checkbox" checked> report_final_v3.pdf</div>
-            <div class="row"><input type="checkbox" checked> 📁 Images <span class="why">96</span></div>
-            <div class="row in">📁 2025-07</div>
-            <div class="row in2"><input type="checkbox" checked> IMG_2034.jpg, IMG_2035.jpg</div>
-            <div class="row"><input type="checkbox" checked> 📁 Installers <span class="why">19</span></div>
-            <div class="row"><input type="checkbox"> 📁 Audio <span class="why">снято вами</span></div>
-            <div class="row"><input type="checkbox" checked> 📁 _Tembo_Review <span class="tag">проверьте</span></div>
-            <div class="row in"><input type="checkbox" checked> Duplicates · report_final_v3 (1).pdf</div>
-            <div class="row in"><input type="checkbox" checked> Unsorted · data.bin</div>
-          </div>
+      <div>
+        <div class="grp">Недавние папки</div>
+        <div class="list">
+          <div class="li"><span class="ic" style="background:#34c759"><svg><use href="#i-folder"/></svg></span>Проекты<span class="c">готово</span></div>
+          <div class="li"><span class="ic" style="background:#64d2ff"><svg><use href="#i-folder"/></svg></span>Фото с телефона<span class="c">готово</span></div>
+          <div class="li"><span class="ic" style="background:#8e8e93"><svg><use href="#i-folder"/></svg></span>Другая папка…</div>
         </div>
       </div>
-      <div class="foot">
-        <span class="sp">Снимите галочку с того, что трогать не нужно.</span>
-        <button class="btn">Назад</button>
-        <button class="btn pri">Разобрать 263 файла</button>
+      <div class="badge"><svg width="16" height="16" style="color:var(--acc)"><use href="#i-lock"/></svg><span><b>Офлайн и приватно.</b> Файлы не покидают ваш Mac.</span></div>
+    </aside>
+
+    <section class="main">
+      <div class="tool"><span>⋯</span></div>
+      <div class="title"><h2>Загрузки</h2><span class="big">263</span></div>
+      <div class="sub">~/Downloads · можно освободить 1,8 ГБ на дубликатах</div>
+
+      <div class="dash">
+        <div class="tile orb-t">
+          <div class="orb"><div class="wave b"></div><div class="wave"></div><div class="v"><b>26%</b><span>порядка</span></div></div>
+          <div><h4>Захламлено</h4><div class="s">станет 100% после разбора</div></div>
+        </div>
+        <div class="right">
+          <div class="tile">
+            <h4>Что лежит в папке</h4><div class="s">263 файла · 6,4 ГБ</div>
+            <div class="bar"><i style="flex:31;background:#5ac8fa"></i><i style="flex:28;background:#5e5ce6"></i><i style="flex:18;background:#30b0c7"></i><i style="flex:11;background:#a2845e"></i><i style="flex:8;background:#1a7cff"></i><i style="flex:4;background:#ff375f"></i></div>
+            <div class="legend"><span><i style="background:#5ac8fa"></i>Фото 2,0 ГБ</span><span><i style="background:#5e5ce6"></i>Дубликаты 1,8 ГБ</span><span><i style="background:#30b0c7"></i>Установщики 1,1 ГБ</span><span><i style="background:#a2845e"></i>Архивы 0,7 ГБ</span><span><i style="background:#1a7cff"></i>Документы 0,5 ГБ</span><span><i style="background:#ff375f"></i>Музыка 0,3 ГБ</span></div>
+          </div>
+          <div class="minis">
+            <div class="tile mini"><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span><div><b>1,8 ГБ</b><div class="s">в 37 дубликатах</div></div><div class="prog"><i style="width:28%;background:#5e5ce6"></i></div></div>
+            <div class="tile mini"><span class="ic" style="background:#30b0c7"><svg><use href="#i-app"/></svg></span><div><b>19</b><div class="s">старых установщиков</div></div><div class="prog"><i style="width:18%;background:#30b0c7"></i></div></div>
+            <div class="tile mini"><span class="ic" style="background:#ff9f0a"><svg><use href="#i-eye"/></svg></span><div><b>12</b><div class="s">на проверку вам</div></div><div class="prog"><i style="width:5%;background:#ff9f0a"></i></div></div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div class="sec">
+        <div class="row h open"><span class="chk on"></span><span class="ic" style="background:#1a7cff"><svg><use href="#i-doc"/></svg></span>Документы<span class="rt">48 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row"><span class="chk on"></span><span class="fn">Отчёт_квартал_3.pdf</span><span class="rt"><span class="pill">→ Документы</span></span></div>
+        <div class="row"><span class="chk on"></span><span class="fn">Договор аренды.docx</span><span class="rt"><span class="pill">→ Документы</span></span></div>
+        <div class="row"><span class="chk"></span><span class="fn">бюджет_2025.xlsx</span><span class="rt">не трогать</span></div>
+        <div class="more">Показать ещё 45</div>
+
+        <div class="row h"><span class="chk on"></span><span class="ic" style="background:#5ac8fa"><svg><use href="#i-img"/></svg></span>Фото · по месяцам<span class="rt">96 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row h"><span class="chk on"></span><span class="ic" style="background:#30b0c7"><svg><use href="#i-app"/></svg></span>Установщики<span class="rt">19 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row h"><span class="chk on"></span><span class="ic" style="background:#ff375f"><svg><use href="#i-music"/></svg></span>Музыка<span class="rt">23 файла<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row h"><span class="chk on"></span><span class="ic" style="background:#a2845e"><svg><use href="#i-zip"/></svg></span>Архивы<span class="rt">28 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row h open"><span class="chk on"></span><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span>Дубликаты<span class="rt"><span class="pill warn">1,8 ГБ</span>37 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+        <div class="row"><span class="chk on"></span><span class="fn">Отчёт_квартал_3 (1).pdf</span><span class="rt">копия «Отчёт_квартал_3.pdf»</span></div>
+        <div class="row"><span class="chk on"></span><span class="fn">macOS_Installer (2).dmg</span><span class="rt">копия · 1,6 ГБ</span></div>
+        <div class="more">Показать ещё 35</div>
+      </div>
+
+      <div class="dock">
+        <span class="safe"><svg width="15" height="15" style="color:var(--acc)"><use href="#i-shield"/></svg>Ничего не удаляется · всё можно отменить</span>
+        <button class="btn pri">Разобрать 262 файла</button>
+      </div>
+    </section>
   </div>
-</div>
 
-<div class="screen">
-  <p class="label">ЭКРАН 3 · ГОТОВО</p>
-  <div class="win">
-    <div class="bar"><span class="dots"><span></span><span></span><span></span></span>Tembo — Загрузки</div>
-    <div class="body">
+  <div class="cap">После разбора</div>
+  <div class="win" style="min-height:440px">
+    <aside class="side">
+      <div class="lights"><i></i><i></i><i></i></div>
+      <div class="search"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Поиск файла</div>
+      <div class="cards">
+        <div class="card on"><div class="hd"><span class="ic" style="background:rgba(255,255,255,.25)"><svg><use href="#i-down"/></svg></span><span class="n">0</span></div><div class="ct">Загрузки</div></div>
+        <div class="card"><div class="hd"><span class="ic" style="background:#5ac8fa"><svg><use href="#i-desk"/></svg></span><span class="n">58</span></div><div class="ct">Рабочий стол</div></div>
+      </div>
+      <div class="badge"><svg width="16" height="16" style="color:var(--acc)"><use href="#i-lock"/></svg><span><b>Офлайн и приватно.</b> Файлы не покидают ваш Mac.</span></div>
+    </aside>
+    <section class="main">
       <div class="done">
-        <div class="big">✓</div>
-        <b>Готово: 263 файла на своих местах</b>
-        <p>Дубликаты и непонятные файлы лежат в «_Tembo_Review»: посмотрите, когда будет время.</p>
-        <div class="foot">
-          <button class="btn">↶ Отменить всё</button>
-          <button class="btn">Открыть папку</button>
-          <button class="btn pri">Разобрать ещё</button>
+        <div>
+          <div class="halo"><svg><use href="#i-check"/></svg></div>
+          <h2>Загрузки в порядке</h2>
+          <p>262 файла разложены по папкам. Дубликаты и непонятные файлы ждут вас в «На проверку».</p>
+          <div class="sumrow">
+            <div><b>213</b><span>разложено</span></div>
+            <div><b>37</b><span>дубликатов</span></div>
+            <div><b>1,8 ГБ</b><span>можно освободить</span></div>
+          </div>
+          <div class="btns">
+            <button class="btn">↶ Отменить всё</button>
+            <button class="btn">Показать в Finder</button>
+            <button class="btn pri">Разобрать Рабочий стол</button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 
+<script>
+const root=document.documentElement;
+document.querySelectorAll('#theme button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#theme button').forEach(x=>x.classList.toggle('on',x===b));
+  if(b.dataset.t==='auto')root.removeAttribute('data-theme');else root.dataset.theme=b.dataset.t;
+});
+document.querySelectorAll('.chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+</script>
 </body>
 </html>
