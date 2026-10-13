@@ -16,14 +16,11 @@ class Move:
     src: Path
     dst: Path
     reason: str
-    source: str = "rule"  # "rule" or "claude"
 
 
 @dataclass
 class Plan:
     moves: list[Move] = field(default_factory=list)
-    # Files rules could not place; later stages hand these to Claude.
-    unresolved: list[FileInfo] = field(default_factory=list)
     skipped: list[FileInfo] = field(default_factory=list)
 
 
@@ -47,7 +44,8 @@ def build_plan(files: list[FileInfo]) -> Plan:
 
         category = category_of(f)
         if category is None:
-            plan.unresolved.append(f)
+            dst = _unique(Path(REVIEW_DIR) / "Unsorted" / f.name, taken)
+            plan.moves.append(Move(f.path, dst, "неизвестный тип, проверьте вручную"))
             continue
 
         folder = Path(category)
@@ -72,7 +70,6 @@ def _unique(dst: Path, taken: set[Path]) -> Path:
 
 
 def is_safe_destination(dst: Path) -> bool:
-    """A destination must stay inside the organized folder. Used to validate
-    anything not produced by our own rules (e.g. Claude suggestions)."""
+    """A destination must stay inside the organized folder."""
     p = PurePosixPath(str(dst).replace("\\", "/"))
     return not p.is_absolute() and ".." not in p.parts and bool(p.parts) and ":" not in p.parts[0]

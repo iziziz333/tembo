@@ -1,5 +1,4 @@
-"""Deterministic classification. Anything these rules can decide never goes
-to Claude: it is faster, free, and predictable."""
+"""Deterministic classification: fast, free and predictable."""
 
 from __future__ import annotations
 
@@ -28,7 +27,7 @@ EXT_TO_CATEGORY = {ext: cat for cat, exts in CATEGORIES.items() for ext in exts}
 SKIP_EXTS = {".crdownload", ".part", ".partial", ".download", ".tmp", ".lnk", ".url"}
 
 # Names a camera/phone/screenshot tool produced: their meaning is the date,
-# so rules can file them without asking Claude.
+# so they are filed by month.
 GENERATED_NAME = re.compile(
     r"^(img|dsc|dscn|pxl|vid|mvimg|photo|screenshot|снимок экрана|скриншот)[ _-]?\d",
     re.IGNORECASE,

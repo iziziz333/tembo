@@ -54,9 +54,8 @@ def test_unknown_and_skipped(tmp_path):
     touch(tmp_path, "movie.mp4.crdownload")
     touch(tmp_path, ".hidden")
     plan = build_plan(scan(tmp_path))
-    assert [str(f.path) for f in plan.unresolved] == ["mystery.xyz"]
+    assert moves(plan) == {"mystery.xyz": f"{REVIEW_DIR}/Unsorted/mystery.xyz"}
     assert [str(f.path) for f in plan.skipped] == ["movie.mp4.crdownload"]
-    assert plan.moves == []
 
 
 def test_name_conflicts_get_suffix(tmp_path):
