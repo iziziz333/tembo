@@ -29,7 +29,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--desk);color:var(--ink);font:14px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;min-height:100vh;padding:36px 16px 60px;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--desk);color:var(--ink);font:14px/1.4 "Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;min-height:100vh;padding:36px 16px 60px;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(80px);opacity:.7;z-index:0;pointer-events:none}
 body::before{width:520px;height:520px;background:var(--blob1);top:-120px;left:-80px}
 body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right:-120px}
@@ -42,11 +42,15 @@ body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right
 .cap{font-size:12px;color:var(--mute);margin:28px 0 10px;letter-spacing:.04em;text-transform:uppercase}
 
 /* window: landscape, fixed height, panes scroll inside like a real app */
-.win{display:grid;grid-template-columns:240px 1fr;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.35);height:720px}
+.win{display:grid;grid-template-columns:240px 1fr;border-radius:8px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.35);height:752px;grid-template-rows:auto 1fr}
+.tbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;height:32px;padding-left:12px;font-size:12px;color:var(--mute);background:var(--side);border-bottom:1px solid var(--line)}
+.cap-btns{display:flex;height:100%}
+.cap-btns i{width:46px;display:grid;place-items:center;font:normal 10px "Segoe Fluent Icons","Segoe MDL2 Assets",sans-serif}
+.cap-btns i:nth-child(1)::before{content:"";width:10px;height:1px;background:currentColor}
+.cap-btns i:nth-child(2)::before{content:"";width:9px;height:9px;border:1px solid currentColor}
+.cap-btns i:nth-child(3)::before{content:"\2715";font:13px/1 sans-serif}
+.cap-btns i{font-size:0}
 .side{background:var(--side);backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);padding:16px 12px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--line);overflow:auto}
-.lights{display:flex;gap:8px;padding:2px 6px 4px}
-.lights i{width:12px;height:12px;border-radius:50%;display:block}
-.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
 .search{display:flex;align-items:center;gap:6px;background:var(--field);border-radius:8px;padding:6px 9px;color:var(--mute);font-size:13px}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .card{background:var(--card);border-radius:12px;padding:9px 10px 8px;border:1px solid var(--line)}
@@ -62,8 +66,6 @@ body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right
 .li{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;font-size:13.5px}
 .li .ic{width:24px;height:24px}.li .ic svg{width:13px;height:13px}
 .li .c{margin-left:auto;color:var(--mute);font-size:12.5px}
-.badge{margin-top:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.badge b{color:var(--ink);font-weight:600}
 
 .main{background:var(--main);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);display:flex;flex-direction:column;min-width:0;min-height:0}
 .head{display:flex;align-items:center;gap:16px;padding:22px 28px 14px}
@@ -81,7 +83,7 @@ body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right
 .orb-t{display:flex;align-items:center;gap:18px}
 
 /* liquid orb */
-.orb{position:relative;width:140px;height:140px;flex:none;border-radius:50%;background:var(--orb-bg);box-shadow:inset 0 0 0 2px rgba(26,124,255,.28),0 14px 34px rgba(26,124,255,.25)}
+.orb{position:relative;width:140px;height:140px;flex:none;border-radius:50%;background:var(--orb-bg);box-shadow:inset 0 0 0 1.5px rgba(26,124,255,.25)}
 .orb svg{position:absolute;inset:0;width:100%;height:100%}
 .orb .slosh{transform-box:view-box;transform-origin:100px 150px;animation:slosh 3.4s cubic-bezier(.45,0,.55,1) infinite alternate}
 .orb .fill{animation:rise 1.8s cubic-bezier(.2,.8,.2,1) both}
@@ -92,20 +94,11 @@ body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right
 @keyframes rise{from{transform:translateY(70px)}to{transform:translateY(0)}}
 .orb .v{position:absolute;inset:0;display:grid;place-items:center;align-content:center;padding-bottom:26px;line-height:1.1;z-index:2}
 .orb .v b{font-size:32px;font-weight:700;letter-spacing:-.02em}
-.orb .v span{font-size:11px;color:var(--mute)}
-.orb::after{content:"";position:absolute;top:12px;left:26px;width:46px;height:20px;border-radius:50%;background:rgba(255,255,255,.6);filter:blur(4px);transform:rotate(-25deg);z-index:3}
-.orb:hover .slosh{animation-duration:1.1s}
 
 .bar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:10px 0 9px;gap:2px}
 .legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:12px;color:var(--mute)}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
-.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mini{display:flex;flex-direction:column;gap:6px;padding:12px}
-.mini .ic{width:30px;height:30px}.mini .ic svg{width:15px;height:15px}
-.mini b{font-size:19px;font-weight:700;letter-spacing:-.02em}
-.prog{height:4px;border-radius:99px;background:var(--field);overflow:hidden}
-.prog i{display:block;height:100%;border-radius:99px}
 
 .row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);margin-left:38px;font-size:13.5px}
 .row.h{margin-left:0;padding:10px 0;font-weight:600;font-size:14.5px}
@@ -116,33 +109,30 @@ body::after{width:600px;height:600px;background:var(--blob3);bottom:-200px;right
 .chk.on{background:var(--acc);border-color:var(--acc)}
 .chk.on::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 .fn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.pill{font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--sel);color:var(--acc);white-space:nowrap}
-.pill.warn{background:rgba(255,159,10,.15);color:#c77700}
 .more{margin-left:38px;padding:8px 0;color:var(--acc);font-size:13px}
-.dock{display:flex;align-items:center;gap:12px;padding:14px 0 18px;border-top:1px solid var(--line)}
-.dock .safe{font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:6px;flex:1}
-.btn{border:0;font:inherit;font-weight:600;font-size:13.5px;border-radius:99px;padding:9px 18px;cursor:pointer;color:var(--ink);background:var(--field)}
-.btn.pri{color:#fff;background:linear-gradient(180deg,var(--acc2),var(--acc));box-shadow:0 6px 18px rgba(26,124,255,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.dock{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:14px 0 18px;border-top:1px solid var(--line)}
+.btn{border:1px solid var(--line);font:inherit;font-weight:500;font-size:13.5px;border-radius:8px;padding:7px 16px;cursor:pointer;color:var(--ink);background:var(--card)}
+.btn:hover{background:var(--field)}
+.btn.pri{color:#fff;background:var(--acc);border-color:var(--acc)}
+.btn.pri:hover{filter:brightness(1.08)}
 
 /* done */
-.done{flex:1;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding:0 60px}
-.halo{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,var(--acc2),var(--acc));box-shadow:0 18px 40px rgba(26,124,255,.35),inset 0 2px 0 rgba(255,255,255,.4);margin-bottom:20px}
-.halo svg{width:44px;height:44px;color:#fff}
+.done{flex:1;display:grid;align-items:center;padding:0 60px}
+.halo{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--acc);margin-bottom:20px}
+.halo svg{width:30px;height:30px;color:#fff}
 .done h2{font-size:30px;margin:0 0 8px;letter-spacing:-.02em}
 .done p{color:var(--mute);margin:0 0 24px;max-width:380px}
 .btns{display:flex;gap:10px;flex-wrap:wrap}
-.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sumgrid .tile b{display:block;font-size:26px;letter-spacing:-.02em}
 
 /* inside the real app window (preview.py): no fake desktop, window fills the screen */
-html.app body{padding:0;background:transparent;min-height:0}
-html.app body::before,html.app body::after,html.app .top,html.app .cap,html.app .lights{display:none}
-html.app .wrap{max-width:none}
+html.app body{padding:0;background:#e6f0fc;min-height:0}
+@media (prefers-color-scheme:dark){html.app:not([data-theme="light"]) body{background:#121a26}}
+html.app[data-theme="dark"] body{background:#121a26}
+html.app body::before,html.app body::after,html.app .top,html.app .cap,html.app .tbar,html.app html.app .wrap{max-width:none}
 html.app .win{height:100vh;border-radius:0;border:0;box-shadow:none}
 html.app .win.done-win{display:none}
 html.app.show-done .win.plan-win{display:none}
 html.app.show-done .win.done-win{display:grid}
-html.app .side{padding-top:20px}
 
 @media (max-width:900px){
   .win{grid-template-columns:1fr;height:auto}
@@ -151,7 +141,7 @@ html.app .side{padding-top:20px}
   .done{grid-template-columns:1fr;padding:30px 20px}
   .scroll{overflow:visible}
 }
-@media (max-width:480px){.minis{grid-template-columns:1fr}.orb-t{flex-direction:column;align-items:flex-start}.dock .safe{display:none}}
+@media (max-width:480px){.orb-t{flex-direction:column;align-items:flex-start}}
 </style>
 <script>if(/[?&]app=1/.test(location.search))document.documentElement.classList.add('app')</script>
 </head>
@@ -167,10 +157,8 @@ html.app .side{padding-top:20px}
   <symbol id="i-music" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="17" cy="16" r="3" fill="currentColor"/></symbol>
   <symbol id="i-zip" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 3h14v18H5zM12 3v4m0 2v2m0 2v2"/></symbol>
   <symbol id="i-folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 6h6l2 2h10v11H3z"/></symbol>
-  <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 11h14v10H5zM8 11V8a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="m9 12 2 2 4-4"/></symbol>
 </svg>
 
 <div class="wrap">
@@ -183,8 +171,8 @@ html.app .side{padding-top:20px}
 
   <div class="cap">Главный экран · план разбора</div>
   <div class="win plan-win">
+    <div class="tbar"><span>Tembo</span><span class="cap-btns"><i>&#xE921;</i><i>&#xE922;</i><i>&#xE8BB;</i></span></div>
     <aside class="side">
-      <div class="lights"><i></i><i></i><i></i></div>
       <div class="search"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Поиск файла</div>
       <div class="cards">
         <div class="card on"><div class="hd"><span class="ic" style="background:rgba(255,255,255,.25)"><svg><use href="#i-down"/></svg></span><span class="n">263</span></div><div class="ct">Загрузки</div></div>
@@ -200,12 +188,11 @@ html.app .side{padding-top:20px}
           <div class="li"><span class="ic" style="background:#8e8e93"><svg><use href="#i-folder"/></svg></span>Другая папка…</div>
         </div>
       </div>
-      <div class="badge"><svg width="16" height="16" style="color:var(--acc)"><use href="#i-lock"/></svg><span><b>Офлайн и приватно.</b> Файлы не покидают ваш Mac.</span></div>
     </aside>
 
     <section class="main">
       <div class="head">
-        <div><h2>Загрузки</h2><div class="sub">~/Downloads · можно освободить 1,8 ГБ на дубликатах</div></div>
+        <div><h2>Загрузки</h2><div class="sub">Этот компьютер › Загрузки · можно освободить 1,8 ГБ на дубликатах</div></div>
         <span class="big">263</span>
       </div>
 
@@ -225,9 +212,9 @@ html.app .side{padding-top:20px}
                   </g></g>
                 </g>
               </svg>
-              <div class="v"><b>26%</b><span>порядка</span></div>
+              <div class="v"><b>26%</b></div>
             </div>
-            <div><h4>Захламлено</h4><div class="s">После разбора станет 100%. Наведите на шар 🙂</div></div>
+            <div><h4>Уже на местах</h4><div class="s">69 из 263 файлов лежат в своих папках</div></div>
           </div>
 
           <div class="tile">
@@ -235,32 +222,26 @@ html.app .side{padding-top:20px}
             <div class="bar"><i style="flex:31;background:#5ac8fa"></i><i style="flex:28;background:#5e5ce6"></i><i style="flex:18;background:#30b0c7"></i><i style="flex:11;background:#a2845e"></i><i style="flex:8;background:#1a7cff"></i><i style="flex:4;background:#ff375f"></i></div>
             <div class="legend"><span><i style="background:#5ac8fa"></i>Фото 2,0 ГБ</span><span><i style="background:#5e5ce6"></i>Дубликаты 1,8 ГБ</span><span><i style="background:#30b0c7"></i>Установщики 1,1 ГБ</span><span><i style="background:#a2845e"></i>Архивы 0,7 ГБ</span><span><i style="background:#1a7cff"></i>Документы 0,5 ГБ</span><span><i style="background:#ff375f"></i>Музыка 0,3 ГБ</span></div>
           </div>
-
-          <div class="minis">
-            <div class="tile mini"><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span><div><b>1,8 ГБ</b><div class="s">дубликаты</div></div><div class="prog"><i style="width:28%;background:#5e5ce6"></i></div></div>
-            <div class="tile mini"><span class="ic" style="background:#30b0c7"><svg><use href="#i-app"/></svg></span><div><b>19</b><div class="s">установщиков</div></div><div class="prog"><i style="width:18%;background:#30b0c7"></i></div></div>
-            <div class="tile mini"><span class="ic" style="background:#ff9f0a"><svg><use href="#i-eye"/></svg></span><div><b>12</b><div class="s">проверить</div></div><div class="prog"><i style="width:5%;background:#ff9f0a"></i></div></div>
-          </div>
         </div>
 
         <div class="listcol">
           <div class="scroll">
             <div class="row h open"><span class="chk on"></span><span class="ic" style="background:#1a7cff"><svg><use href="#i-doc"/></svg></span>Документы<span class="rt">48 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
-            <div class="row"><span class="chk on"></span><span class="fn">Отчёт_квартал_3.pdf</span><span class="rt"><span class="pill">→ Документы</span></span></div>
-            <div class="row"><span class="chk on"></span><span class="fn">Договор аренды.docx</span><span class="rt"><span class="pill">→ Документы</span></span></div>
+            <div class="row"><span class="chk on"></span><span class="fn">Отчёт_квартал_3.pdf</span><span class="rt">в Документы</span></div>
+            <div class="row"><span class="chk on"></span><span class="fn">Договор аренды.docx</span><span class="rt">в Документы</span></div>
             <div class="row"><span class="chk"></span><span class="fn">бюджет_2025.xlsx</span><span class="rt">не трогать</span></div>
             <div class="more">Показать ещё 45</div>
             <div class="row h"><span class="chk on"></span><span class="ic" style="background:#5ac8fa"><svg><use href="#i-img"/></svg></span>Фото · по месяцам<span class="rt">96 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
             <div class="row h"><span class="chk on"></span><span class="ic" style="background:#30b0c7"><svg><use href="#i-app"/></svg></span>Установщики<span class="rt">19 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
             <div class="row h"><span class="chk on"></span><span class="ic" style="background:#ff375f"><svg><use href="#i-music"/></svg></span>Музыка<span class="rt">23 файла<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
             <div class="row h"><span class="chk on"></span><span class="ic" style="background:#a2845e"><svg><use href="#i-zip"/></svg></span>Архивы<span class="rt">28 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
-            <div class="row h open"><span class="chk on"></span><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span>Дубликаты<span class="rt"><span class="pill warn">1,8 ГБ</span>37 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
+            <div class="row h open"><span class="chk on"></span><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span>Дубликаты<span class="rt">1,8 ГБ · 37 файлов<svg class="chev" width="14" height="14"><use href="#i-chev"/></svg></span></div>
             <div class="row"><span class="chk on"></span><span class="fn">Отчёт_квартал_3 (1).pdf</span><span class="rt">копия · 2 МБ</span></div>
-            <div class="row"><span class="chk on"></span><span class="fn">macOS_Installer (2).dmg</span><span class="rt">копия · 1,6 ГБ</span></div>
+            <div class="row"><span class="chk on"></span><span class="fn">Win11_24H2 (2).iso</span><span class="rt">копия · 1,6 ГБ</span></div>
             <div class="more">Показать ещё 35</div>
           </div>
           <div class="dock">
-            <span class="safe"><svg width="15" height="15" style="color:var(--acc)"><use href="#i-shield"/></svg>Ничего не удаляется · всё можно отменить</span>
+            
             <button class="btn pri" data-go="done">Разобрать 262 файла</button>
           </div>
         </div>
@@ -270,8 +251,8 @@ html.app .side{padding-top:20px}
 
   <div class="cap">После разбора</div>
   <div class="win done-win">
+    <div class="tbar"><span>Tembo</span><span class="cap-btns"><i>&#xE921;</i><i>&#xE922;</i><i>&#xE8BB;</i></span></div>
     <aside class="side">
-      <div class="lights"><i></i><i></i><i></i></div>
       <div class="search"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Поиск файла</div>
       <div class="cards">
         <div class="card on"><div class="hd"><span class="ic" style="background:rgba(255,255,255,.25)"><svg><use href="#i-down"/></svg></span><span class="n">0</span></div><div class="ct">Загрузки</div></div>
@@ -279,25 +260,18 @@ html.app .side{padding-top:20px}
         <div class="card"><div class="hd"><span class="ic" style="background:#5e5ce6"><svg><use href="#i-dup"/></svg></span><span class="n">37</span></div><div class="ct">Дубликаты</div></div>
         <div class="card"><div class="hd"><span class="ic" style="background:#ff9f0a"><svg><use href="#i-eye"/></svg></span><span class="n">12</span></div><div class="ct">На проверку</div></div>
       </div>
-      <div class="badge"><svg width="16" height="16" style="color:var(--acc)"><use href="#i-lock"/></svg><span><b>Офлайн и приватно.</b> Файлы не покидают ваш Mac.</span></div>
     </aside>
     <section class="main">
       <div class="done">
         <div>
           <div class="halo"><svg><use href="#i-check"/></svg></div>
           <h2>Загрузки в порядке</h2>
-          <p>262 файла разложены по папкам. Дубликаты и непонятные файлы ждут вас в «На проверку».</p>
+          <p>Разложено 213 файлов. 37 дубликатов и 12 файлов неизвестного типа перенесены в «На проверку».</p>
           <div class="btns">
-            <button class="btn" data-go="plan">↶ Отменить всё</button>
-            <button class="btn">Показать в Finder</button>
+            <button class="btn" data-go="plan">Отменить</button>
+            <button class="btn">Открыть в Проводнике</button>
             <button class="btn pri">Разобрать Рабочий стол</button>
           </div>
-        </div>
-        <div class="sumgrid">
-          <div class="tile"><b>213</b><span class="s">разложено по папкам</span></div>
-          <div class="tile"><b>37</b><span class="s">дубликатов на проверке</span></div>
-          <div class="tile"><b>1,8 ГБ</b><span class="s">можно освободить</span></div>
-          <div class="tile"><b>100%</b><span class="s">порядка</span></div>
         </div>
       </div>
     </section>

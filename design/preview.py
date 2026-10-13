@@ -1,9 +1,7 @@
-"""Open the mockup in a real app window instead of a browser tab.
+"""Open the mockup in a real Windows app window instead of a browser tab.
 
     python -m pip install pywebview
     python design/preview.py
-
-On macOS the sidebar gets the system frosted glass (vibrancy).
 """
 
 import sys
@@ -24,6 +22,5 @@ html = html.replace('<html lang="ru">', '<html lang="ru" class="app">', 1)
 webview.create_window(
     "Tembo", html=html,
     width=1180, height=740, min_size=(980, 620),
-    vibrancy=sys.platform == "darwin",
 )
 webview.start()
