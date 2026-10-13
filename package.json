@@ -1,0 +1,55 @@
+{
+  "name": "tembo",
+  "productName": "Tembo",
+  "version": "0.2.0",
+  "description": "Безопасный разборщик файлов для Windows",
+  "main": "src/main.js",
+  "license": "MIT",
+  "author": "iziziz333",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.iziziz333.tembo",
+    "productName": "Tembo",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Tembo-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "Tembo-${version}-portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^44.7.1",
+    "electron-builder": "^26.15.3"
+  }
+}

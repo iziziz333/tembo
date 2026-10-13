@@ -1,0 +1,26 @@
+name: Build Windows app
+
+on:
+  push:
+    branches: [main, master, ccr-51c12f3f-vkgv2m]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npx electron-builder --win --x64 --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tembo-Windows
+          path: |
+            dist/*.exe
+          if-no-files-found: error
