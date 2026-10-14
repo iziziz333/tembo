@@ -37,15 +37,13 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "artifactName": "Tembo-${version}-win.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "artifactName": "Tembo-Setup-${version}.exe"
-    },
-    "zip": {
-      "artifactName": "Tembo-${version}-win.zip"
     }
   },
   "devDependencies": {
