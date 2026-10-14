@@ -8,6 +8,7 @@ const { buildPlan } = require('./core/planner');
 const executor = require('./core/executor');
 const desktop = require('./desktop');
 const updater = require('./updater');
+const tray = require('./tray');
 const { langFor, names, CATEGORY_ORDER } = require('./core/i18n');
 
 const RECENT_LIMIT = 5;
@@ -16,6 +17,7 @@ const RECENT_LIMIT = 5;
 const glass = process.platform === 'win32' && Number(os.release().split('.')[2]) >= 22621;
 
 let win;
+let quitting = false;
 let lang = 'en';
 // Last computed plan per folder: the renderer only picks moves by id,
 // it can never ask to move arbitrary paths.
@@ -41,7 +43,7 @@ function createWindow() {
     titleBarOverlay: titleBarOverlay(),
     backgroundMaterial: glass ? 'acrylic' : undefined,
     backgroundColor: glass ? '#00000000' : (nativeTheme.shouldUseDarkColors ? '#081326' : '#e6f0fc'),
-    icon: path.join(__dirname, '..', 'build', 'icon.png'),
+    icon: path.join(__dirname, 'assets', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -50,7 +52,19 @@ function createWindow() {
     },
   });
   win.loadFile(path.join(__dirname, 'ui', 'index.html'), { query: { glass: glass ? '1' : '0' } });
-  win.once('ready-to-show', () => win.show());
+  // Started with Windows: stay in the tray until the user asks for the window.
+  if (!process.argv.includes('--hidden')) win.once('ready-to-show', () => win.show());
+  // Closing hides the window; Tembo stays in the tray until "Выход".
+  win.on('close', e => {
+    if (quitting) return;
+    e.preventDefault();
+    win.hide();
+    const seen = readJson('seen.json', {});
+    if (!seen.trayHint) {
+      tray.hint('Значок Tembo у часов: разбор папок и расстановка значков — в его меню. Закрыть совсем — «Выход».');
+      writeJson('seen.json', { ...seen, trayHint: true });
+    }
+  });
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', e => e.preventDefault());
 }
@@ -200,13 +214,15 @@ ipcMain.handle('apply', async (_e, folder, ids, opts = {}) => {
 });
 
 // Only line up desktop icons, without moving any file. Undoable too.
-ipcMain.handle('arrange', async (_e, folder) => {
+async function arrangeIcons(folder) {
   if (!isDesktop(folder)) throw new Error('Расставлять значки можно только на рабочем столе');
   const meta = await iconSnapshot(folder);
   const icons = await desktop.arrangeDesktop(folder);
   if (icons.arranged && meta) await executor.apply(folder, [], meta);
   return icons;
-});
+}
+
+ipcMain.handle('arrange', (_e, folder) => arrangeIcons(folder));
 
 ipcMain.handle('undo', async (_e, folder) => {
   if (!(await isFolder(folder))) throw new Error('Папка не найдена');
@@ -225,11 +241,42 @@ ipcMain.handle('open-folder', async (_e, folder) => {
 
 // ---------- app ----------
 
-app.whenReady().then(() => {
-  lang = langFor(app.getPreferredSystemLanguages()[0] || app.getLocale());
-  Menu.setApplicationMenu(null);
-  createWindow();
-  updater.start(win);
-});
+function showWindow() {
+  if (win.isMinimized()) win.restore();
+  win.show();
+  win.focus();
+}
 
-app.on('window-all-closed', () => app.quit());
+// One Tembo at a time: starting it again brings the running one forward.
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+} else {
+  app.on('second-instance', () => win && showWindow());
+
+  app.whenReady().then(() => {
+    app.setAppUserModelId('com.iziziz333.tembo');
+    lang = langFor(app.getPreferredSystemLanguages()[0] || app.getLocale());
+    Menu.setApplicationMenu(null);
+    createWindow();
+    tray.create({
+      show: showWindow,
+      openFolder: which => {
+        showWindow();
+        win.webContents.send('open-folder', app.getPath(which));
+      },
+      arrange: async () => {
+        const icons = await arrangeIcons(app.getPath('desktop')).catch(e => ({ error: e.message }));
+        if (icons.arranged) tray.hint('Значки расставлены по группам. Отменить можно в Tembo → Рабочий стол → «Отменить прошлое».');
+        else if (icons.autoArrange) tray.hint('Выключите «Упорядочить значки автоматически» (правый клик по рабочему столу → Вид).');
+        else tray.hint(`Не получилось: ${icons.error}`);
+      },
+      quit: () => {
+        quitting = true;
+        app.quit();
+      },
+    });
+    updater.start(win);
+  });
+
+  app.on('before-quit', () => { quitting = true; });
+}

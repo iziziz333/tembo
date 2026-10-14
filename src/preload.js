@@ -13,4 +13,5 @@ contextBridge.exposeInMainWorld('tembo', {
   updateStatus: () => ipcRenderer.invoke('update-status'),
   installUpdate: () => ipcRenderer.invoke('update-install'),
   onUpdateStatus: cb => ipcRenderer.on('update-status', (_e, s) => cb(s)),
+  onOpenFolder: cb => ipcRenderer.on('open-folder', (_e, folder) => cb(folder)),
 });

@@ -494,6 +494,7 @@ async function main() {
   };
   $('update-btn').onclick = () => api.installUpdate();
   api.onUpdateStatus(showUpdate);
+  api.onOpenFolder(folder => open(folder));
   showUpdate(await api.updateStatus());
   open(state.env.downloads);
 }
