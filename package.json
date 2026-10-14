@@ -1,7 +1,7 @@
 {
   "name": "tembo",
   "productName": "Tembo",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Безопасный разборщик файлов для Windows",
   "main": "src/main.js",
   "license": "MIT",

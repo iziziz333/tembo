@@ -1,4 +1,5 @@
 :root {
+  --mono: 'JetBrains Mono', Consolas, monospace;
   --bg: #e6f0fc;
   --side: rgba(236, 244, 255, .72);
   --main: rgba(255, 255, 255, .86);
@@ -43,7 +44,8 @@ html, body { margin: 0; height: 100%; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font: 14px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  font: 500 14px/1.45 'Manrope', "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: "tnum" 0;
   overflow: hidden;
   user-select: none;
 }
@@ -78,8 +80,8 @@ button { font: inherit; color: inherit; }
 .card.on .ic { background: rgba(255, 255, 255, .25) !important; }
 .card:disabled { cursor: default; opacity: .55; }
 .card .hd { display: flex; justify-content: space-between; align-items: center; }
-.card .n { font-size: 20px; font-weight: 700; }
-.card .ct { font-size: 12.5px; font-weight: 600; color: var(--mute); margin-top: 4px; }
+.card .n { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.card .ct { font-size: 12.5px; font-weight: 700; color: var(--mute); margin-top: 4px; }
 
 .ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #fff; flex: none; }
 .ic svg { width: 15px; height: 15px; }
@@ -104,9 +106,9 @@ button { font: inherit; color: inherit; }
 #rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .head { display: flex; align-items: center; gap: 16px; padding: 40px 28px 14px; }
 .head-t { min-width: 0; }
-.head h1 { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin: 0; color: var(--acc); line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.head .sub { color: var(--mute); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.head .big { margin-left: auto; font-size: 30px; font-weight: 600; color: var(--acc); }
+.head h1 { font-size: 30px; font-weight: 800; letter-spacing: -.025em; margin: 0; color: var(--acc); line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.head .sub { color: var(--mute); font: 400 12px/1.6 var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.head .big { margin-left: auto; font-size: 30px; font-weight: 800; color: var(--acc); }
 
 .body { flex: 1; min-height: 0; display: grid; grid-template-columns: 330px 1fr; gap: 18px; padding: 0 28px; }
 .dashcol { display: flex; flex-direction: column; gap: 12px; overflow: auto; padding-bottom: 20px; }
@@ -114,7 +116,7 @@ button { font: inherit; color: inherit; }
 .scroll { flex: 1; overflow: auto; min-height: 0; padding-right: 4px; }
 
 .tile { background: var(--tile); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
-.tile h4 { margin: 0 0 2px; font-size: 13px; font-weight: 600; }
+.tile h4 { margin: 0 0 2px; font-size: 13.5px; font-weight: 700; }
 .tile .s { font-size: 12px; color: var(--mute); }
 .orb-t { display: flex; align-items: center; gap: 18px; }
 
@@ -128,17 +130,17 @@ button { font: inherit; color: inherit; }
 @keyframes slosh { 0% { transform: rotate(-11deg) translateY(2px); } 50% { transform: rotate(2deg) translateY(-3px); } 100% { transform: rotate(10deg) translateY(1px); } }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-120px); } }
 .orb .v { position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 20px; }
-.orb .v b { font-size: 32px; font-weight: 700; letter-spacing: -.02em; }
+.orb .v b { font-size: 32px; font-weight: 800; letter-spacing: -.02em; }
 @media (prefers-reduced-motion: reduce) { .orb .slosh, .orb .w1, .orb .w2 { animation: none; } }
 
 .bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; margin: 10px 0 9px; gap: 2px; background: var(--field); }
-.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 12px; color: var(--mute); }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font: 400 11px/1.5 var(--mono); color: var(--mute); }
 .legend span { display: inline-flex; align-items: center; gap: 5px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .legend i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 
 .row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); margin-left: 38px; font-size: 13.5px; }
-.row.h { margin-left: 0; padding: 10px 0; font-weight: 600; font-size: 14.5px; cursor: pointer; }
-.row .rt { margin-left: auto; padding-left: 12px; display: flex; align-items: center; gap: 10px; color: var(--mute); font-size: 12.5px; font-weight: 400; white-space: nowrap; }
+.row.h { margin-left: 0; padding: 10px 0; font-weight: 700; font-size: 14.5px; cursor: pointer; }
+.row .rt { margin-left: auto; padding-left: 12px; display: flex; align-items: center; gap: 10px; color: var(--mute); font: 400 11.5px/1.4 var(--mono); white-space: nowrap; }
 .chev { width: 14px; height: 14px; color: var(--mute); transition: transform .15s; }
 .open > .rt .chev { transform: rotate(90deg); }
 .chk { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(110, 130, 160, .55); flex: none; display: grid; place-items: center; cursor: pointer; background: none; padding: 0; }
@@ -151,12 +153,12 @@ button { font: inherit; color: inherit; }
 .empty b { display: block; color: var(--ink); font-size: 17px; margin-bottom: 4px; }
 
 .dock { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 0 18px; border-top: 1px solid var(--line); }
-.dock-t { flex: 1; color: var(--mute); font-size: 12.5px; }
+.dock-t { flex: 1; color: var(--mute); font: 400 11.5px/1.4 var(--mono); }
 .opt { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--mute); cursor: pointer; }
 .opt input { accent-color: var(--acc); margin: 0; }
 .fn .fi { width: 14px; height: 14px; color: var(--mute); vertical-align: -2px; margin-right: 6px; }
 
-.btn { border: 1px solid var(--line); font-weight: 500; font-size: 13.5px; border-radius: 8px; padding: 7px 16px; cursor: pointer; background: var(--card); }
+.btn { border: 1px solid var(--line); font-weight: 700; font-size: 13.5px; border-radius: 8px; padding: 7px 16px; cursor: pointer; background: var(--card); }
 .btn:hover { background: var(--field); }
 .btn.pri { color: #fff; background: var(--acc); border-color: var(--acc); }
 .btn.pri:hover { filter: brightness(1.08); }
@@ -165,7 +167,7 @@ button { font: inherit; color: inherit; }
 .done { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 60px; max-width: 640px; }
 .halo { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--acc); margin-bottom: 20px; }
 .halo svg { width: 30px; height: 30px; color: #fff; }
-.done h1 { font-size: 30px; margin: 0 0 8px; letter-spacing: -.02em; }
+.done h1 { font-size: 30px; font-weight: 800; margin: 0 0 8px; letter-spacing: -.025em; }
 .done p { color: var(--mute); margin: 0 0 20px; }
 .failed { color: var(--danger); font-size: 13px; margin: -8px 0 20px; }
 .failed div { color: var(--mute); }
