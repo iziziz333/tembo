@@ -5,7 +5,7 @@ const { categoryOf, shouldSkip, isGeneratedName, seriesKey, SERIES_MIN } = requi
 const { names } = require('./i18n');
 
 // Categories where several files with one name prefix get their own subfolder.
-const SERIES_CATEGORIES = new Set(['Images', 'Videos', 'Audio', 'Documents', 'Spreadsheets', 'Presentations', 'Archives', 'HtmlGames', 'Code']);
+const SERIES_CATEGORIES = new Set(['Images', 'Design', 'Models3D', 'Videos', 'Audio', 'AudioProjects', 'Documents', 'Spreadsheets', 'Presentations', 'Archives', 'HtmlGames', 'Scripts', 'Code']);
 
 function buildPlan(files, lang = 'en', folders = []) {
   const n = names(lang);

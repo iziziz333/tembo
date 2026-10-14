@@ -8,6 +8,10 @@ const GROUPS = {
   HtmlGames: { icon: 'game', color: '#ff9f0a' },
   Programs: { icon: 'window', color: '#5e5ce6' },
   Projects: { icon: 'code', color: '#34c759' },
+  Scripts: { icon: 'terminal', color: '#1f2937' },
+  Design: { icon: 'brush', color: '#bf5af2' },
+  Models3D: { icon: 'cube', color: '#ff6b35' },
+  AudioProjects: { icon: 'wave', color: '#ff2d55' },
   WebPages: { icon: 'globe', color: '#30b0c7' },
   Documents: { icon: 'doc', color: '#1a7cff' },
   Spreadsheets: { icon: 'table', color: '#34c759' },
@@ -24,10 +28,6 @@ const GROUPS = {
   duplicates: { icon: 'dup', color: '#5e5ce6' },
   unsorted: { icon: 'eye', color: '#ff9f0a' },
 };
-// Same order as the folders Tembo creates (src/core/i18n.js), review last.
-const ORDER = ['Games', 'HtmlGames', 'Programs', 'Projects', 'Documents', 'Spreadsheets', 'Presentations',
-  'Images', 'Videos', 'Audio', 'WebPages', 'Archives', 'Installers', 'DiskImages', 'Code', 'Fonts', 'Torrents',
-  'duplicates', 'unsorted'];
 const ROWS_PREVIEW = 5;
 
 const state = {
@@ -107,7 +107,9 @@ function groupsOf(moves) {
     if (!map.has(m.group)) map.set(m.group, []);
     map.get(m.group).push(m);
   }
-  return [...map.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b));
+  // Same order as the folders Tembo creates, review groups last.
+  const order = [...state.data.categoryOrder, 'duplicates', 'unsorted'];
+  return [...map.entries()].sort(([a], [b]) => order.indexOf(a) - order.indexOf(b));
 }
 
 function folderTitle(folder) {
@@ -445,6 +447,21 @@ async function undoLast() {
   open(state.folder);
 }
 
+// ---------- updates ----------
+
+function showUpdate(s) {
+  $('update').hidden = s.state === 'idle';
+  if (s.state === 'downloading') {
+    $('update-title').textContent = `Обновление ${s.version}`;
+    $('update-text').textContent = `Скачивается… ${s.percent || 0}%`;
+    $('update-btn').hidden = true;
+  } else if (s.state === 'ready') {
+    $('update-title').textContent = `Версия ${s.version} готова`;
+    $('update-text').textContent = 'Установится при перезапуске.';
+    $('update-btn').hidden = false;
+  }
+}
+
 // ---------- wiring ----------
 
 async function main() {
@@ -475,6 +492,9 @@ async function main() {
     state.query = e.target.value.trim();
     if (state.data) renderList();
   };
+  $('update-btn').onclick = () => api.installUpdate();
+  api.onUpdateStatus(showUpdate);
+  showUpdate(await api.updateStatus());
   open(state.env.downloads);
 }
 

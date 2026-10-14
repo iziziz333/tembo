@@ -1,7 +1,7 @@
 {
   "name": "tembo",
   "productName": "Tembo",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Безопасный разборщик файлов для Windows",
   "main": "src/main.js",
   "license": "MIT",
@@ -44,10 +44,21 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "artifactName": "Tembo-Setup-${version}.exe"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "iziziz333",
+        "repo": "tembo",
+        "releaseType": "release"
+      }
+    ]
   },
   "devDependencies": {
     "electron": "^44.7.1",
     "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9"
   }
 }

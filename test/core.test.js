@@ -362,3 +362,43 @@ test('game shortcuts are recognised by launcher or install folder', () => {
   assert.ok(!isGameShortcut({ target: 'C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe' }));
   assert.ok(!isGameShortcut({ urlFile: '[InternetShortcut]\nURL=https://github.com' }));
 });
+
+test('many extensions: scripts, music projects, design files, 3D', async () => {
+  const d = tmp();
+  for (const [i, n] of ['macro.ahk', 'run.bat', 'tool.py', 'beat.flp', 'Insert 15.fst', 'bass.serum',
+    'lead.fxp', 'melody.mid', 'art.paint', 'cover.pdn', 'mockup.psd', 'hero.blend', 'tree.fbx',
+    'minecraft-mod.jar'].entries()) touch(d, n, 'x'.repeat(i + 1));
+  assert.deepEqual(moves(await plan(d, {}, 'ru')), {
+    'macro.ahk': 'Скрипты/macro.ahk',
+    'run.bat': 'Скрипты/run.bat',
+    'tool.py': 'Скрипты/tool.py',
+    'beat.flp': 'Музыкальные проекты/beat.flp',
+    'Insert 15.fst': 'Музыкальные проекты/Insert 15.fst',
+    'bass.serum': 'Музыкальные проекты/bass.serum',
+    'lead.fxp': 'Музыкальные проекты/lead.fxp',
+    'melody.mid': 'Музыкальные проекты/melody.mid',
+    'art.paint': 'Графика/art.paint',
+    'cover.pdn': 'Графика/cover.pdn',
+    'mockup.psd': 'Графика/mockup.psd',
+    'hero.blend': '3D-модели/hero.blend',
+    'tree.fbx': '3D-модели/tree.fbx',
+    'minecraft-mod.jar': 'Программы/minecraft-mod.jar',
+  });
+});
+
+test('every extension belongs to exactly one category', () => {
+  const table = require('../src/core/extensions');
+  const seen = new Map();
+  for (const [cat, exts] of Object.entries(table)) {
+    for (const ext of exts) {
+      assert.match(ext, /^\.[a-z0-9]+$/, `${ext} in ${cat}`);
+      assert.ok(!seen.has(ext), `${ext} is in both ${seen.get(ext)} and ${cat}`);
+      seen.set(ext, cat);
+    }
+  }
+  const { names, CATEGORY_ORDER } = require('../src/core/i18n');
+  for (const cat of Object.keys(table)) {
+    assert.ok(CATEGORY_ORDER.includes(cat), `${cat} has a place in the order`);
+    assert.ok(names('ru')[cat] && names('en')[cat], `${cat} has folder names`);
+  }
+});

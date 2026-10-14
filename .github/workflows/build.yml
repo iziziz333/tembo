@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write # publish releases the app updates from
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,7 +36,11 @@ jobs:
           $get2 = powershell -NoProfile -ExecutionPolicy Bypass -File src/desktop-icons.ps1 get
           Write-Host "GET AFTER SET: $get2"
           Remove-Item $probe -Force
-      - run: npx electron-builder --win --x64 --publish never
+      # A push publishes the build as a GitHub release (once per version);
+      # pull requests only build.
+      - run: npx electron-builder --win --x64 --publish ${{ github.event_name == 'push' && 'always' || 'never' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
           name: Tembo-Windows

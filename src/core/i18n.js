@@ -3,7 +3,8 @@
 const NAMES = {
   ru: {
     Games: 'Игры', HtmlGames: 'HTML-игры', WebPages: 'Веб-страницы', Projects: 'Проекты',
-    Programs: 'Программы', Installers: 'Установщики',
+    Programs: 'Программы', Installers: 'Установщики', Scripts: 'Скрипты',
+    AudioProjects: 'Музыкальные проекты', Design: 'Графика', Models3D: '3D-модели',
     Images: 'Изображения', Videos: 'Видео', Audio: 'Музыка', Documents: 'Документы',
     Spreadsheets: 'Таблицы', Presentations: 'Презентации', Archives: 'Архивы',
     DiskImages: 'Образы дисков', Code: 'Код', Fonts: 'Шрифты', Torrents: 'Торренты',
@@ -11,7 +12,8 @@ const NAMES = {
   },
   en: {
     Games: 'Games', HtmlGames: 'HTML Games', WebPages: 'Web Pages', Projects: 'Projects',
-    Programs: 'Programs', Installers: 'Installers',
+    Programs: 'Programs', Installers: 'Installers', Scripts: 'Scripts',
+    AudioProjects: 'Music Projects', Design: 'Design', Models3D: '3D Models',
     Images: 'Images', Videos: 'Videos', Audio: 'Music', Documents: 'Documents',
     Spreadsheets: 'Spreadsheets', Presentations: 'Presentations', Archives: 'Archives',
     DiskImages: 'Disk Images', Code: 'Code', Fonts: 'Fonts', Torrents: 'Torrents',
@@ -21,9 +23,9 @@ const NAMES = {
 
 // Display and layout order of the folders Tembo creates.
 const CATEGORY_ORDER = [
-  'Games', 'HtmlGames', 'Programs', 'Projects', 'Documents', 'Spreadsheets', 'Presentations',
-  'Images', 'Videos', 'Audio', 'WebPages', 'Archives', 'Installers', 'DiskImages', 'Code',
-  'Fonts', 'Torrents',
+  'Games', 'HtmlGames', 'Programs', 'Projects', 'Scripts', 'Documents', 'Spreadsheets',
+  'Presentations', 'Images', 'Design', 'Models3D', 'Videos', 'Audio', 'AudioProjects',
+  'WebPages', 'Archives', 'Installers', 'DiskImages', 'Code', 'Fonts', 'Torrents',
 ];
 
 const RU_LOCALES = ['ru', 'uk', 'be', 'kk'];

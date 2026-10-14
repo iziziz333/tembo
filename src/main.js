@@ -7,7 +7,8 @@ const { scan } = require('./core/scanner');
 const { buildPlan } = require('./core/planner');
 const executor = require('./core/executor');
 const desktop = require('./desktop');
-const { langFor, names } = require('./core/i18n');
+const updater = require('./updater');
+const { langFor, names, CATEGORY_ORDER } = require('./core/i18n');
 
 const RECENT_LIMIT = 5;
 
@@ -121,6 +122,7 @@ function summarize(folder, { files, organized }, plan) {
     name: path.basename(folder) || folder,
     lang,
     folderNames: n,
+    categoryOrder: CATEGORY_ORDER,
     total: files.length,
     organized,
     skipped: plan.skipped.length,
@@ -227,6 +229,7 @@ app.whenReady().then(() => {
   lang = langFor(app.getPreferredSystemLanguages()[0] || app.getLocale());
   Menu.setApplicationMenu(null);
   createWindow();
+  updater.start(win);
 });
 
 app.on('window-all-closed', () => app.quit());
