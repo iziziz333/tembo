@@ -2,20 +2,29 @@
 
 const NAMES = {
   ru: {
+    Games: 'Игры', HtmlGames: 'HTML-игры', WebPages: 'Веб-страницы', Projects: 'Проекты',
+    Programs: 'Программы', Installers: 'Установщики',
     Images: 'Изображения', Videos: 'Видео', Audio: 'Музыка', Documents: 'Документы',
     Spreadsheets: 'Таблицы', Presentations: 'Презентации', Archives: 'Архивы',
-    Installers: 'Установщики', DiskImages: 'Образы дисков', Code: 'Код',
-    Fonts: 'Шрифты', Torrents: 'Торренты',
+    DiskImages: 'Образы дисков', Code: 'Код', Fonts: 'Шрифты', Torrents: 'Торренты',
     review: '_Tembo на проверку', duplicates: 'Дубликаты', unsorted: 'Неизвестные',
   },
   en: {
+    Games: 'Games', HtmlGames: 'HTML Games', WebPages: 'Web Pages', Projects: 'Projects',
+    Programs: 'Programs', Installers: 'Installers',
     Images: 'Images', Videos: 'Videos', Audio: 'Music', Documents: 'Documents',
     Spreadsheets: 'Spreadsheets', Presentations: 'Presentations', Archives: 'Archives',
-    Installers: 'Installers', DiskImages: 'Disk Images', Code: 'Code',
-    Fonts: 'Fonts', Torrents: 'Torrents',
+    DiskImages: 'Disk Images', Code: 'Code', Fonts: 'Fonts', Torrents: 'Torrents',
     review: '_Tembo Review', duplicates: 'Duplicates', unsorted: 'Unsorted',
   },
 };
+
+// Display and layout order of the folders Tembo creates.
+const CATEGORY_ORDER = [
+  'Games', 'HtmlGames', 'Programs', 'Projects', 'Documents', 'Spreadsheets', 'Presentations',
+  'Images', 'Videos', 'Audio', 'WebPages', 'Archives', 'Installers', 'DiskImages', 'Code',
+  'Fonts', 'Torrents',
+];
 
 const RU_LOCALES = ['ru', 'uk', 'be', 'kk'];
 
@@ -30,4 +39,10 @@ function names(lang) {
 // Review folders of every language, so a rescan never sorts them again.
 const REVIEW_DIRS = new Set(Object.values(NAMES).map(n => n.review.toLowerCase()));
 
-module.exports = { langFor, names, REVIEW_DIRS };
+// Folders Tembo itself creates, in every language: they are destinations,
+// never something to sort.
+const TEMBO_DIRS = new Set(
+  Object.values(NAMES).flatMap(n => [...CATEGORY_ORDER.map(k => n[k]), n.review]).map(s => s.toLowerCase()),
+);
+
+module.exports = { langFor, names, REVIEW_DIRS, TEMBO_DIRS, CATEGORY_ORDER };

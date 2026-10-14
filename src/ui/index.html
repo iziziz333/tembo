@@ -25,6 +25,9 @@
   <symbol id="i-code" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m8 7-5 5 5 5m8-10 5 5-5 5"/></symbol>
   <symbol id="i-font" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 20 11 4h2l6 16M8 14h8"/></symbol>
   <symbol id="i-folder" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 6h6l2 2h10v11H3z"/></symbol>
+  <symbol id="i-game" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M6 8h12a4 4 0 0 1 4 4v1a4 4 0 0 1-7 2.6L13.5 14h-3L9 15.6A4 4 0 0 1 2 13v-1a4 4 0 0 1 4-4z"/><path stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/><circle cx="18" cy="14" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="i-window" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M3 5h18v14H3zM3 9h18"/><circle cx="6" cy="7" r=".9" fill="currentColor"/><circle cx="9" cy="7" r=".9" fill="currentColor"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></symbol>
@@ -85,7 +88,9 @@
           <div class="scroll" id="list"></div>
           <div class="dock">
             <span class="dock-t" id="selinfo"></span>
-            <button class="btn" id="undo-last" hidden>Отменить прошлый разбор</button>
+            <label class="opt" id="arrange-wrap" hidden><input type="checkbox" id="arrange-opt" checked>Расставить значки по группам</label>
+            <button class="btn" id="arrange-only" hidden>Только расставить значки</button>
+            <button class="btn" id="undo-last" hidden>Отменить прошлое</button>
             <button class="btn pri" id="apply" disabled>Разобрать</button>
           </div>
         </div>

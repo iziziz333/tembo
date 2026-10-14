@@ -7,7 +7,8 @@ const { execFile } = require('child_process');
 const { isSafeDestination } = require('./planner');
 const { toAbs, JOURNAL_DIR } = require('./scanner');
 
-async function apply(root, moves) {
+// meta: anything to bring back on undo (e.g. desktop icon positions).
+async function apply(root, moves, meta = null) {
   root = path.resolve(root);
   const journalDir = path.join(root, JOURNAL_DIR);
   await fs.promises.mkdir(journalDir, { recursive: true });
@@ -24,8 +25,7 @@ async function apply(root, moves) {
     }
   } finally {
     // Written even if we crash midway: whatever moved can be reverted.
-    const entries = done.map(m => ({ src: m.src, dst: m.dst }));
-    await fs.promises.writeFile(journal, JSON.stringify(entries, null, 1), 'utf8');
+    await writeJournal(journal, done.map(m => ({ src: m.src, dst: m.dst })), meta);
   }
   return { done, failed, journal };
 }
@@ -46,9 +46,12 @@ async function lastJournal(root) {
 async function undo(root) {
   root = path.resolve(root);
   const journal = await lastJournal(root);
-  if (!journal) return { done: [], failed: [], journal: null };
+  if (!journal) return { done: [], failed: [], journal: null, meta: null };
 
-  const entries = JSON.parse(await fs.promises.readFile(journal, 'utf8'));
+  const data = JSON.parse(await fs.promises.readFile(journal, 'utf8'));
+  // Version 1 journals were a bare list of moves.
+  const entries = Array.isArray(data) ? data : data.moves;
+  const meta = Array.isArray(data) ? null : data.meta;
   const done = [];
   const failed = [];
   for (const e of [...entries].reverse()) {
@@ -63,12 +66,15 @@ async function undo(root) {
 
   if (failed.length) {
     // Keep only what is still to be reverted, so undo can be retried.
-    const left = failed.map(({ src, dst }) => ({ src, dst }));
-    await fs.promises.writeFile(journal, JSON.stringify(left, null, 1), 'utf8');
+    await writeJournal(journal, failed.map(({ src, dst }) => ({ src, dst })), meta);
   } else {
     await fs.promises.rename(journal, journal.replace(/\.json$/, '.undone'));
   }
-  return { done, failed, journal };
+  return { done, failed, journal, meta };
+}
+
+function writeJournal(file, moves, meta) {
+  return fs.promises.writeFile(file, JSON.stringify({ version: 2, moves, meta }, null, 1), 'utf8');
 }
 
 async function move(root, src, dst) {

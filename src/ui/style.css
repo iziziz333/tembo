@@ -144,8 +144,11 @@ button { font: inherit; color: inherit; }
 .empty { padding: 60px 0; text-align: center; color: var(--mute); }
 .empty b { display: block; color: var(--ink); font-size: 17px; margin-bottom: 4px; }
 
-.dock { display: flex; align-items: center; gap: 10px; padding: 14px 0 18px; border-top: 1px solid var(--line); }
+.dock { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 0 18px; border-top: 1px solid var(--line); }
 .dock-t { flex: 1; color: var(--mute); font-size: 12.5px; }
+.opt { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--mute); cursor: pointer; }
+.opt input { accent-color: var(--acc); margin: 0; }
+.fn .fi { width: 14px; height: 14px; color: var(--mute); vertical-align: -2px; margin-right: 6px; }
 
 .btn { border: 1px solid var(--line); font-weight: 500; font-size: 13.5px; border-radius: 8px; padding: 7px 16px; cursor: pointer; background: var(--card); }
 .btn:hover { background: var(--field); }

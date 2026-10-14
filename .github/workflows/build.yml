@@ -17,6 +17,23 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      # Diagnostic only: shows whether the desktop icon bridge works on a real
+      # Windows desktop. It never blocks the build.
+      - name: Desktop icons bridge
+        continue-on-error: true
+        shell: powershell
+        run: |
+          $probe = Join-Path ([Environment]::GetFolderPath('Desktop')) 'tembo-ci-probe.txt'
+          New-Item -ItemType File -Path $probe -Force | Out-Null
+          Start-Sleep -Seconds 3
+          $get = powershell -NoProfile -ExecutionPolicy Bypass -File src/desktop-icons.ps1 get
+          Write-Host "GET: $get"
+          '[{"name":"tembo-ci-probe.txt","x":600,"y":300}]' | Set-Content -Encoding UTF8 "$env:TEMP\probe.json"
+          $set = powershell -NoProfile -ExecutionPolicy Bypass -File src/desktop-icons.ps1 set "$env:TEMP\probe.json"
+          Write-Host "SET: $set"
+          $get2 = powershell -NoProfile -ExecutionPolicy Bypass -File src/desktop-icons.ps1 get
+          Write-Host "GET AFTER SET: $get2"
+          Remove-Item $probe -Force
       - run: npx electron-builder --win --x64 --publish never
       - uses: actions/upload-artifact@v4
         with:

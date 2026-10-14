@@ -4,21 +4,30 @@ const api = window.tembo;
 const $ = id => document.getElementById(id);
 
 const GROUPS = {
+  Games: { icon: 'game', color: '#ff375f' },
+  HtmlGames: { icon: 'game', color: '#ff9f0a' },
+  Programs: { icon: 'window', color: '#5e5ce6' },
+  Projects: { icon: 'code', color: '#34c759' },
+  WebPages: { icon: 'globe', color: '#30b0c7' },
   Documents: { icon: 'doc', color: '#1a7cff' },
   Spreadsheets: { icon: 'table', color: '#34c759' },
   Presentations: { icon: 'slides', color: '#ff9f0a' },
   Images: { icon: 'img', color: '#5ac8fa' },
   Videos: { icon: 'video', color: '#af52de' },
-  Audio: { icon: 'music', color: '#ff375f' },
+  Audio: { icon: 'music', color: '#e0457b' },
   Archives: { icon: 'zip', color: '#a2845e' },
-  Installers: { icon: 'app', color: '#30b0c7' },
+  Installers: { icon: 'app', color: '#64748b' },
   DiskImages: { icon: 'disc', color: '#8e8e93' },
-  Code: { icon: 'code', color: '#64748b' },
+  Code: { icon: 'code', color: '#8e8e93' },
   Fonts: { icon: 'font', color: '#ff9f0a' },
   Torrents: { icon: 'down', color: '#8e8e93' },
   duplicates: { icon: 'dup', color: '#5e5ce6' },
   unsorted: { icon: 'eye', color: '#ff9f0a' },
 };
+// Same order as the folders Tembo creates (src/core/i18n.js), review last.
+const ORDER = ['Games', 'HtmlGames', 'Programs', 'Projects', 'Documents', 'Spreadsheets', 'Presentations',
+  'Images', 'Videos', 'Audio', 'WebPages', 'Archives', 'Installers', 'DiskImages', 'Code', 'Fonts', 'Torrents',
+  'duplicates', 'unsorted'];
 const ROWS_PREVIEW = 5;
 
 const state = {
@@ -42,6 +51,14 @@ function plural(n, forms) {
   return forms[2];
 }
 const files = n => `${n} ${plural(n, ['файл', 'файла', 'файлов'])}`;
+const dirs = n => `${n} ${plural(n, ['папка', 'папки', 'папок'])}`;
+
+// "2 папки · 3 файла": what a group or plan actually holds.
+function countLabel(moves) {
+  const nd = moves.filter(m => m.isFolder).length;
+  const nf = moves.length - nd;
+  return [nd && dirs(nd), nf && files(nf)].filter(Boolean).join(' · ') || files(0);
+}
 
 function size(bytes) {
   const units = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ'];
@@ -90,9 +107,7 @@ function groupsOf(moves) {
     if (!map.has(m.group)) map.set(m.group, []);
     map.get(m.group).push(m);
   }
-  const special = ['duplicates', 'unsorted'];
-  return [...map.entries()].sort(([a, x], [b, y]) =>
-    (special.indexOf(a) - special.indexOf(b)) || (y.length - x.length));
+  return [...map.entries()].sort(([a], [b]) => ORDER.indexOf(a) - ORDER.indexOf(b));
 }
 
 function folderTitle(folder) {
@@ -166,6 +181,8 @@ async function open(folder) {
   $('list').replaceChildren(message('Сканирую папку…', ''));
   $('apply').disabled = true;
   $('undo-last').hidden = true;
+  $('arrange-wrap').hidden = true;
+  $('arrange-only').hidden = true;
   setOrb(null);
   renderComposition();
   renderRecent();
@@ -181,7 +198,7 @@ async function open(folder) {
   }
 
   const d = state.data;
-  for (const m of d.moves) state.selected.add(m.id);
+  for (const m of d.moves) if (!m.kept) state.selected.add(m.id);
   const groups = groupsOf(d.moves);
   if (groups.length) state.expanded.add(groups[0][0]);
 
@@ -190,11 +207,13 @@ async function open(folder) {
   const dupSize = d.moves.filter(m => m.group === 'duplicates').reduce((s, m) => s + m.size, 0);
   $('subtitle').textContent = dupSize ? `${folder} · дубликаты занимают ${size(dupSize)}` : folder;
   $('undo-last').hidden = !d.canUndo;
+  $('arrange-wrap').hidden = !d.isDesktop;
+  $('arrange-only').hidden = !d.isDesktop;
 
   const pct = d.organized + d.moves.length ? d.organized / (d.organized + d.moves.length) : 1;
   setOrb(pct);
   $('pct-text').textContent = d.moves.length
-    ? `${d.organized} из ${d.organized + d.moves.length} файлов лежат в своих папках`
+    ? `${d.organized} из ${d.organized + d.moves.length} уже лежат в своих папках`
     : 'Все файлы лежат в своих папках';
   renderComposition();
   renderList();
@@ -226,7 +245,7 @@ function renderComposition() {
     return;
   }
   const total = d.moves.reduce((s, m) => s + m.size, 0);
-  $('comp-sub').textContent = `${files(d.moves.length)} · ${size(total)}`;
+  $('comp-sub').textContent = `${countLabel(d.moves)} · ${size(total)}`;
   const parts = groupsOf(d.moves)
     .map(([key, list]) => ({ key, bytes: list.reduce((s, m) => s + m.size, 0) }))
     .sort((a, b) => b.bytes - a.bytes);
@@ -282,7 +301,7 @@ function renderList() {
     };
     const meta = GROUPS[key];
     const bytes = all.reduce((s, m) => s + m.size, 0);
-    const rt = el('span', 'rt', `${files(all.length)} · ${size(bytes)}`);
+    const rt = el('span', 'rt', `${countLabel(all)} · ${size(bytes)}`);
     rt.append(svgIcon('chev', 'chev'));
     head.append(chk, icon(meta.icon, meta.color), el('span', 'fn', groupLabel(key)), rt);
     head.onclick = () => {
@@ -312,9 +331,12 @@ function fileRow(m) {
   };
   const name = el('span', 'fn', m.name);
   name.title = `${m.src} → ${m.dst}`;
-  let note = size(m.size);
+  if (m.isFolder) name.prepend(svgIcon('folder', 'fi'));
+  let note = m.isFolder ? `папка · ${size(m.size)}` : size(m.size);
   if (m.duplicateOf) note = `копия «${m.duplicateOf.split('/').pop()}» · ${note}`;
-  else if (m.dst.split('/').length > 2 && m.group !== 'unsorted') note = `${m.dst.split('/').slice(0, -1).join(' › ')} · ${note}`;
+  else if (m.series) note = `серия «${m.series}» · ${note}`;
+  else if (m.dst.split('/').length > 2 && m.group !== 'unsorted') note = `${m.dst.split('/').slice(1, -1).join(' › ')} · ${note}`;
+  if (m.kept && !state.selected.has(m.id)) note = `вы просили не трогать · ${note}`;
   row.append(chk, name, el('span', 'rt', note));
   return row;
 }
@@ -337,7 +359,7 @@ async function applyPlan() {
   $('apply').textContent = 'Разбираю…';
   let r;
   try {
-    r = await api.apply(state.folder, ids);
+    r = await api.apply(state.folder, ids, { arrange: d.isDesktop && $('arrange-opt').checked });
   } catch (e) {
     $('list').replaceChildren(message('Не получилось', String(e.message || e)));
     return;
@@ -360,6 +382,8 @@ function showDone(r) {
   if (dups) review.push(`${dups} ${plural(dups, ['дубликат', 'дубликата', 'дубликатов'])}`);
   if (unknown) review.push(`${files(unknown)} неизвестного типа`);
   if (review.length) parts.push(`${review.join(' и ')} — в папке «${r.reviewDir}», проверьте их, когда будет время.`);
+  const icons = iconsNote(r.icons);
+  if (icons) parts.push(icons);
   $('done-text').textContent = parts.join(' ');
 
   const failed = $('failed');
@@ -374,6 +398,35 @@ function showDone(r) {
   showView('done');
   renderRecent();
   refreshCards({ rescan: true });
+}
+
+function iconsNote(icons) {
+  if (!icons) return '';
+  if (icons.arranged) return 'Значки на рабочем столе расставлены по группам.';
+  if (icons.autoArrange) return 'Значки не расставлены: в Windows включено «Упорядочить значки автоматически». Выключите его (правый клик по рабочему столу → Вид) и нажмите «Только расставить значки».';
+  return `Значки расставить не удалось: ${icons.error}.`;
+}
+
+async function arrangeOnly() {
+  const b = $('arrange-only');
+  b.disabled = true;
+  b.textContent = 'Расставляю…';
+  let icons;
+  try {
+    icons = await api.arrange(state.folder);
+  } catch (e) {
+    icons = { error: String(e.message || e).replace(/^Error invoking remote method '[^']+': (Error: )?/, '') };
+  } finally {
+    b.disabled = false;
+    b.textContent = 'Только расставить значки';
+  }
+  $('done-title').textContent = icons.arranged ? 'Значки расставлены' : 'Значки не расставлены';
+  $('done-text').textContent = icons.arranged
+    ? 'Системные значки, приложения, игры, папки разбора, ваши папки и файлы стоят своими колонками. «Отменить» вернёт всё, как было.'
+    : iconsNote(icons);
+  $('failed').hidden = true;
+  $('undo').hidden = !icons.arranged;
+  showView('done');
 }
 
 function showView(name) {
@@ -415,6 +468,7 @@ async function main() {
   $('apply').onclick = applyPlan;
   $('undo').onclick = undoLast;
   $('undo-last').onclick = undoLast;
+  $('arrange-only').onclick = arrangeOnly;
   $('open').onclick = () => api.openFolder(state.folder);
   $('again').onclick = () => open(state.folder);
   $('search').oninput = e => {

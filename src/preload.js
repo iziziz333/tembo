@@ -6,7 +6,8 @@ contextBridge.exposeInMainWorld('tembo', {
   pickFolder: () => ipcRenderer.invoke('pick-folder'),
   analyze: folder => ipcRenderer.invoke('analyze', folder),
   onScanProgress: cb => ipcRenderer.on('scan-progress', (_e, folder, n) => cb(folder, n)),
-  apply: (folder, ids) => ipcRenderer.invoke('apply', folder, ids),
+  apply: (folder, ids, opts) => ipcRenderer.invoke('apply', folder, ids, opts),
+  arrange: folder => ipcRenderer.invoke('arrange', folder),
   undo: folder => ipcRenderer.invoke('undo', folder),
   openFolder: folder => ipcRenderer.invoke('open-folder', folder),
 });
