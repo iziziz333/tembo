@@ -214,9 +214,11 @@ async function open(folder) {
 
   const pct = d.organized + d.moves.length ? d.organized / (d.organized + d.moves.length) : 1;
   setOrb(pct);
-  $('pct-text').textContent = d.moves.length
-    ? `${d.organized} из ${d.organized + d.moves.length} уже лежат в своих папках`
-    : 'Все файлы лежат в своих папках';
+  $('pct-text').textContent = !d.moves.length
+    ? 'Все файлы лежат в своих папках'
+    : d.organized
+      ? `${d.organized} из ${d.organized + d.moves.length} уже лежат в своих папках`
+      : `Пока ничего не разложено. Tembo разложит ${countLabel(d.moves)}.`;
   renderComposition();
   renderList();
   refreshCards();
@@ -492,6 +494,7 @@ async function main() {
     state.query = e.target.value.trim();
     if (state.data) renderList();
   };
+  $('version').textContent = `Tembo ${state.env.version}`;
   $('update-btn').onclick = () => api.installUpdate();
   api.onUpdateStatus(showUpdate);
   api.onOpenFolder(folder => open(folder));

@@ -163,6 +163,7 @@ ipcMain.handle('init', () => ({
   desktop: app.getPath('desktop'),
   recent: readRecent(),
   canArrange: desktop.supported,
+  version: app.getVersion(),
 }));
 
 ipcMain.handle('loose-count', async (_e, folder) => {

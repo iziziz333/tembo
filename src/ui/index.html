@@ -55,14 +55,16 @@
       <div class="list" id="recent"></div>
       <button class="li" id="pick"><span class="ic" style="background:#8e8e93"><svg><use href="#i-plus"/></svg></span>Другая папка…</button>
     </div>
-    <div class="update" id="update" hidden>
-      <div><b id="update-title"></b><span id="update-text"></span></div>
-      <button class="btn pri" id="update-btn" hidden>Перезапустить</button>
+    <div class="side-foot">
+      <div class="update" id="update" hidden>
+        <div><b id="update-title"></b><span id="update-text"></span></div>
+        <button class="btn pri" id="update-btn" hidden>Перезапустить</button>
+      </div>
+      <div class="ver" id="version"></div>
     </div>
   </aside>
 
   <main class="main">
-    <canvas id="rain" aria-hidden="true"></canvas>
     <section id="plan-view" class="view">
       <header class="head">
         <div class="head-t"><h1 id="title">Загрузки</h1><div class="sub" id="subtitle"></div></div>
@@ -124,6 +126,5 @@
 </div>
 
 <script src="app.js"></script>
-<script src="rain.js"></script>
 </body>
 </html>
